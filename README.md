@@ -2,11 +2,15 @@
 0x Exchange protocol implementation in Kotlin.
 
 ## Features
-- 0x SRA interaction
-- Fill/Cancel/Create 0x orders
-- EIP712 typed data encoding
-- Wrap/Unwrap Ethereum
-- Encoding/Decoding of ABIv2 struct types
+* 0x SRA interaction
+* Fill/Cancel/Create 0x orders
+* EIP712 typed data encoding
+* Wrap/Unwrap Ethereum
+* Encoding/Decoding of ABIv2 struct types
+
+## Prerequisites
+* JDK >= 1.8
+* Android 6 (minSdkVersion 23) or greater
 
 ## Installation
 ```
