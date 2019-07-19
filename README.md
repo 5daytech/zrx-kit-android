@@ -1,1 +1,1 @@
-# 0x Protocol Kit
+# 0x-kit-android
