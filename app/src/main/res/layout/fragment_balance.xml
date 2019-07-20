@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/ethBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:text="ETH: "/>
+
+    <TextView
+        android:id="@+id/wethBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:text="WETH: "/>
+
+    <TextView
+        android:id="@+id/tokenBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:text="ZRX: "/>
+
+    <TextView
+        android:id="@+id/currentBlockHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:textStyle="bold"
+        android:text="Last block: "/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp">
+        <EditText
+            android:id="@+id/wrapAmountInput"
+            android:layout_width="0dp"
+            android:layout_weight="1.0"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="Eth amount"/>
+
+        <Button
+            android:id="@+id/wrapConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="wrap"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp">
+        <EditText
+            android:id="@+id/unwrapAmountInput"
+            android:layout_width="0dp"
+            android:layout_weight="1.0"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="Weth amount"/>
+
+        <Button
+            android:id="@+id/unwrapConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="unwrap"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="24dp"
+        android:text="Refresh"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp">
+        <TextView
+            android:id="@+id/receiveAddress"
+            android:layout_weight="1.0"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:textColor="#000"
+            android:textIsSelectable="true"
+            android:textSize="18sp"
+            android:text="Press button to receive address "/>
+
+        <Button
+            android:id="@+id/receiveAddressBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get address"/>
+    </LinearLayout>
+
+</LinearLayout>
