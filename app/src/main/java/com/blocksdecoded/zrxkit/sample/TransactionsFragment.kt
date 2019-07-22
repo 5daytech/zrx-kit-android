@@ -93,7 +93,7 @@ class TransactionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             - Time: ${format.format(Date(tx.timestamp * 1000))}
             - From: ${tx.from.address}
             - To: ${tx.to.address}
-            - Amount: ${tx.amount.stripTrailingZeros()}
+            - Amount: ${Utils.df.format(tx.amount)}
         """
 
         if (lastBlockHeight > 0)
