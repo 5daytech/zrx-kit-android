@@ -64,21 +64,22 @@ class TransactionsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount() = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-            ViewHolderTransaction(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_transaction, parent, false))
+            TransactionViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_transaction, parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ViewHolderTransaction -> holder.bind(items[position], itemCount - position, lastBlockHeight)
+            is TransactionViewHolder -> holder.bind(items[position], itemCount - position, lastBlockHeight)
         }
     }
 }
 
-class ViewHolderTransaction(private val containerView: View) : RecyclerView.ViewHolder(containerView) {
-    private val summary = containerView.findViewById<TextView>(R.id.summary)!!
+class TransactionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private val summary = itemView.findViewById<TextView>(R.id.summary)!!
 
     fun bind(tx: TransactionRecord, index: Int, lastBlockHeight: Long) {
-        containerView.setBackgroundColor(if (index % 2 == 0)
-            Color.parseColor("#dddddd") else
+        itemView.setBackgroundColor(if (index % 2 == 0)
+            Color.parseColor("#dddddd")
+        else
             Color.TRANSPARENT
         )
 

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="#FFF"
+        android:padding="16dp">
+
+    <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:text="Create order"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/create_order_base"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="32dp"
+        android:text="ZRX: "
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="#000"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/create_order_amount_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/create_order_base"
+            app:layout_constraintLeft_toRightOf="@+id/create_order_base"
+            app:layout_constraintTop_toTopOf="@+id/create_order_base"
+            app:layout_constraintRight_toRightOf="parent"
+            app:errorEnabled="false"
+            android:layout_marginBottom="8dp">
+        <EditText
+                android:id="@+id/create_order_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textSize="18sp"
+                android:hint="amount"
+                android:textColor="#000"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/create_order_quote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/create_order_amount_container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="32dp"
+        android:text="Per token: "
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="#000"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/create_order_price_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/create_order_quote"
+            app:layout_constraintLeft_toRightOf="@+id/create_order_quote"
+            app:layout_constraintTop_toTopOf="@+id/create_order_quote"
+            app:layout_constraintRight_toRightOf="parent"
+            app:errorEnabled="false"
+            android:layout_marginBottom="8dp">
+        <EditText
+                android:id="@+id/create_order_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textSize="18sp"
+                android:hint="price"
+                android:textColor="#000"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+            android:id="@+id/create_order_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/create_order_price_container"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="16dp"
+            android:text="Total price: 0.00 WETH"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="#000"/>
+
+    <Button
+            android:id="@+id/create_trade_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/create_order_total"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#eeeeee"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Create"
+            android:textAllCaps="false"
+            android:textColor="#ff6600"
+            android:textSize="18sp"
+            android:textStyle="normal" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

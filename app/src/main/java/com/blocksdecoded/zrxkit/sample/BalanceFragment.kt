@@ -39,14 +39,6 @@ class BalanceFragment : Fragment() {
             viewModel.lastBlockHeight.observe(this, Observer { lastBlock ->
                 currentBlockHeight.text = "Last block: ${lastBlock ?: 0}"
             })
-
-            viewModel.alertEvent.observe(this, Observer {
-                showAlert(it)
-            })
-
-            viewModel.messageEvent.observe(this, Observer {
-                showMessage(it)
-            })
         }
     }
 
@@ -81,10 +73,6 @@ class BalanceFragment : Fragment() {
         receiveAddressBtn.setOnClickListener {
             receiveAddress.text = viewModel.receiveAddress
         }
-    }
-
-    private fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     private fun showAlert(message: String) {

@@ -2,15 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/navigation_balance"
-            android:title="Balance" />
+        android:id="@+id/navigation_balance"
+        android:title="Balance"
+        android:icon="@drawable/ic_balance"/>
 
     <item
-            android:id="@+id/navigation_transactions"
-            android:title="Transactions" />
+        android:id="@+id/navigation_transactions"
+        android:title="Transactions"
+        android:icon="@drawable/ic_transactions"/>
 
     <item
-            android:id="@+id/navigation_exchange"
-            android:title="Exchange" />
+        android:id="@+id/navigation_bids"
+        android:title="Bids"
+        android:icon="@drawable/ic_exchange"/>
+
+    <item
+        android:id="@+id/navigation_asks"
+        android:title="Asks"
+        android:icon="@drawable/ic_exchange"/>
 
 </menu>

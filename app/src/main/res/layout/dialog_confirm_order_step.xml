@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFF"
+    android:padding="16dp"
+    android:fitsSystemWindows="true">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Fill order"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/confirm_order_sell_token"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="24dp"
+        android:text="Amount: "
+        android:textSize="22sp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/confirm_trade_sell_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/confirm_order_sell_token"
+        app:layout_constraintLeft_toRightOf="@+id/confirm_order_sell_token"
+        app:layout_constraintBottom_toBottomOf="@+id/confirm_order_sell_token"
+        android:text="0.00"
+        android:textSize="22sp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/confirm_trade_per_token"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/confirm_trade_sell_amount"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Price per token: 0.00 WETH"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="#000"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/confirm_order_amount_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/confirm_trade_per_token"
+        android:layout_marginTop="16dp">
+        <EditText
+            android:id="@+id/confirm_order_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textSize="18sp"
+            android:hint="Fill amount"
+            android:textColor="#000"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/confirm_trade_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/confirm_order_amount_container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Total price: 0.00 WETH"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="#000"/>
+
+    <Button
+        android:id="@+id/confirm_trade_approve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirm_trade_total"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#eeeeee"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Trade"
+        android:textAllCaps="false"
+        android:textColor="#ff6600"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
