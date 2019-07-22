@@ -116,6 +116,7 @@ class MainViewModel: ViewModel() {
         wethAdapter = Erc20Adapter(App.instance, ethereumKit, "Wrapped Eth", "WETH", wethAddress, decimals)
         zrxAdapter = Erc20Adapter(App.instance, ethereumKit, "0x", "ZRX", zrxAddress, decimals)
 
+        //TODO: Initialize all 0xKit components internally, pass credentials to zrxManager?
         credentials = Credentials.create(ECKeyPair.create(privateKey))
         wethContract = WethWrapper(wethAddress, credentials, gasPriceProvider, tempInfuraUrl)
         zrxExchangeContract = ZrxExchangeWrapper(exchangeAddress, credentials, gasPriceProvider, tempInfuraUrl)

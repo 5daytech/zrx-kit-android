@@ -14,9 +14,17 @@
 * Use `implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"`
 
 ## Installation
+Add the JitPack to module build.gradle:
+```
+repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+}
+```
+Add the following dependency to your build.gradle file:
 ```
 dependencies {
-    
+    implementation 'com.github.blocksdecoded:zrx-kit-android:master-SNAPSHOT'
 }
 ```
 

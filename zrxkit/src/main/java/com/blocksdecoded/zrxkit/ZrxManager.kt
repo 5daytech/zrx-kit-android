@@ -7,6 +7,7 @@ import com.blocksdecoded.zrxkit.relayer.RelayerManager
 import com.blocksdecoded.zrxkit.relayer.model.Relayer
 import java.math.BigInteger
 
+//TODO: Add 0x components providing feature
 class ZrxManager private constructor(
     val relayerManager: IRelayerManager
 ) {
@@ -15,7 +16,7 @@ class ZrxManager private constructor(
         private val minAmount = BigInteger("0")
         private val maxAmount = BigInteger("999999999999999999")
 
-        fun init(relayers: List<Relayer>, networkId: Int = 42): ZrxManager {
+        fun init(relayers: List<Relayer>, networkType: NetworkType = NetworkType.KOVAN): ZrxManager {
             val relayerManager = RelayerManager(relayers)
 
             return ZrxManager(relayerManager)
@@ -27,6 +28,13 @@ class ZrxManager private constructor(
             address = address,
             type = type
         )
+    }
+
+    enum class NetworkType(
+        val id: Int
+    ) {
+        MAINNET(1),
+        KOVAN(42)
     }
 
 }
