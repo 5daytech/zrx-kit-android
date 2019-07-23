@@ -3,8 +3,7 @@ package com.blocksdecoded.zrxkit.sample
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.blocksdecoded.zrxkit.ZrxManager
-import com.blocksdecoded.zrxkit.contracts.Erc20ProxyWrapper
+import com.blocksdecoded.zrxkit.ZrxKit
 import com.blocksdecoded.zrxkit.contracts.WethWrapper
 import com.blocksdecoded.zrxkit.contracts.ZrxExchangeWrapper
 import com.blocksdecoded.zrxkit.model.AssetItem
@@ -17,7 +16,6 @@ import com.blocksdecoded.zrxkit.sample.core.EOrderSide.*
 import com.blocksdecoded.zrxkit.sample.core.Erc20Adapter
 import com.blocksdecoded.zrxkit.sample.core.EthereumAdapter
 import com.blocksdecoded.zrxkit.sample.core.TransactionRecord
-import com.blocksdecoded.zrxkit.utils.SignUtils
 import io.horizontalsystems.ethereumkit.core.EthereumKit
 import io.horizontalsystems.hdwalletkit.HDWallet
 import io.horizontalsystems.hdwalletkit.Mnemonic
@@ -26,9 +24,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import org.web3j.crypto.Credentials
-import org.web3j.crypto.ECKeyPair
-import org.web3j.tx.gas.ContractGasProvider
 import java.math.BigDecimal
 import java.math.BigInteger
 import java.util.*
@@ -41,9 +36,9 @@ class MainViewModel: ViewModel() {
         projectId = "2a1306f1d12f4c109a4d4fb9be46b02e",
         secretKey = "fc479a9290b64a84a15fa6544a130218")
     private val etherscanKey = "GKNHXT22ED7PRVCKZATFZQD1YI7FK9AAYE"
+    private val infuraKey = "57b6615fb10b4749a54b29c2894a00df"
     private val networkType: EthereumKit.NetworkType = EthereumKit.NetworkType.Kovan
 
-    private val tempInfuraUrl = "https://kovan.infura.io/57b6615fb10b4749a54b29c2894a00df"
     private val feeRecipient = "0x2e8da0868e46fc943766a98b8d92a0380b29ce2a"
 
     private val exchangeAddress = "0x30589010550762d2f0d06f650d8e8b6ade6dbf4b"
@@ -51,26 +46,24 @@ class MainViewModel: ViewModel() {
     private val zrxAddress = "0x2002d3812f58e35f0ea1ffbf80a75a38c32175fa"
     private val decimals = 18
 
-    private val gasPriceProvider = object : ContractGasProvider {
-        override fun getGasLimit(contractFunc: String?): BigInteger = 200_000.toBigInteger()
-        override fun getGasLimit(): BigInteger = 200_000.toBigInteger()
+    private val gasInfoProvider = object : ZrxKit.GasInfoProvider() {
+        override fun getGasLimit(contractFunc: String?): BigInteger =
+            200_000.toBigInteger()
 
-        // Gas price 5 GWei
-        override fun getGasPrice(contractFunc: String?): BigInteger = 5_000_000_000.toBigInteger()
-        override fun getGasPrice(): BigInteger = 5_000_000_000.toBigInteger()
+        override fun getGasPrice(contractFunc: String?): BigInteger =
+            5_000_000_000.toBigInteger() // Gas price 5 GWei
     }
 
     private val assetPair: Pair<AssetItem, AssetItem>
-        get() = zrxManager.relayerManager.availableRelayers.first().availablePairs[0]
+        get() = zrxKit.relayerManager.availableRelayers.first().availablePairs[0]
 
     private lateinit var wethContract: WethWrapper
     private lateinit var ethereumKit: EthereumKit
     private lateinit var ethereumAdapter: EthereumAdapter
     private lateinit var wethAdapter: Erc20Adapter
     private lateinit var zrxAdapter: Erc20Adapter
-    private lateinit var zrxManager: ZrxManager
+    private lateinit var zrxKit: ZrxKit
     private lateinit var zrxExchangeContract: ZrxExchangeWrapper
-    private lateinit var credentials: Credentials
 
     private val disposables = CompositeDisposable()
 
@@ -89,6 +82,17 @@ class MainViewModel: ViewModel() {
 
     val receiveAddress: String
         get() = ethereumKit.receiveAddress
+
+    private val relayers = listOf(
+        Relayer(
+            0,
+            "BD Relayer",
+            listOf(ZrxKit.assetItemForAddress(zrxAddress) to ZrxKit.assetItemForAddress(wethAddress)),
+            listOf(feeRecipient),
+            exchangeAddress,
+            RelayerConfig("http://relayer.staging.fridayte.ch", "", "v2")
+        )
+    )
 
     init {
         init()
@@ -116,21 +120,10 @@ class MainViewModel: ViewModel() {
         wethAdapter = Erc20Adapter(App.instance, ethereumKit, "Wrapped Eth", "WETH", wethAddress, decimals)
         zrxAdapter = Erc20Adapter(App.instance, ethereumKit, "0x", "ZRX", zrxAddress, decimals)
 
-        //TODO: Initialize all 0xKit components internally, pass credentials to zrxManager?
-        credentials = Credentials.create(ECKeyPair.create(privateKey))
-        wethContract = WethWrapper(wethAddress, credentials, gasPriceProvider, tempInfuraUrl)
-        zrxExchangeContract = ZrxExchangeWrapper(exchangeAddress, credentials, gasPriceProvider, tempInfuraUrl)
+        zrxKit = ZrxKit.getInstance(relayers, privateKey, gasInfoProvider, infuraKey)
 
-        zrxManager = ZrxManager.init(listOf(
-                Relayer(
-                    0,
-                    "BD Relayer",
-                    listOf(ZrxManager.assetItemForAddress(zrxAddress) to ZrxManager.assetItemForAddress(wethAddress)),
-                    listOf(feeRecipient),
-                    exchangeAddress,
-                    RelayerConfig("http://relayer.staging.fridayte.ch", "", "v2")
-                )
-        ))
+        wethContract = zrxKit.getWethWrapperInstance(wethAddress)
+        zrxExchangeContract = zrxKit.getExchangeInstance(exchangeAddress)
 
         updateEthBalance()
         updateWethBalance()
@@ -192,7 +185,6 @@ class MainViewModel: ViewModel() {
             disposables.add(it)
         }
 
-
         ethereumKit.start()
 
         Observable.interval(refreshRate, TimeUnit.SECONDS)
@@ -249,7 +241,7 @@ class MainViewModel: ViewModel() {
     }
 
     private fun refreshOrders() {
-        zrxManager.relayerManager
+        zrxKit.relayerManager
                 .getOrderbook(0, assetPair.first.assetData, assetPair.second.assetData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -264,14 +256,9 @@ class MainViewModel: ViewModel() {
     //endregion
 
     private fun checkCoinAllowance(address: String): Flowable<Boolean> {
-        val coinWrapper = Erc20ProxyWrapper(
-                address,
-                credentials,
-                gasPriceProvider,
-                providerUrl = tempInfuraUrl
-        )
+        val coinWrapper = zrxKit.getErcProxyInstance(address)
 
-        return coinWrapper.proxyAllowance(credentials.address)
+        return coinWrapper.proxyAllowance(receiveAddress)
                 .flatMap { Log.d(TAG, "$address allowance $it")
                     if (it > BigInteger.ZERO) {
                         Flowable.just(true)
@@ -403,7 +390,7 @@ class MainViewModel: ViewModel() {
         }
 
         val order = Order(
-            makerAddress = credentials.address.toLowerCase(),
+            makerAddress = receiveAddress.toLowerCase(),
             exchangeAddress = exchangeAddress,
             makerAssetData = makerAsset,
             takerAssetData = takerAsset,
@@ -424,12 +411,12 @@ class MainViewModel: ViewModel() {
             salt = Date().time.toString()
         )
 
-        val signedOrder = SignUtils().ecSignOrder(order, credentials)
+        val signedOrder = zrxKit.signOrder(order)
 
         if (signedOrder != null) {
             checkAllowance().flatMap {
                 if (it) {
-                    zrxManager.relayerManager.postOrder(0, signedOrder)
+                    zrxKit.relayerManager.postOrder(0, signedOrder)
                 } else {
                     Flowable.error(Throwable("Unlock tokens"))
                 }
