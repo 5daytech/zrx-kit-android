@@ -1,4 +1,4 @@
-# ZrxKit
+# ZrxKit [![CircleCI](https://circleci.com/gh/blocksdecoded/zrx-kit-android/tree/master.svg?style=shield)](https://circleci.com/gh/blocksdecoded/zrx-kit-android/tree/master) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 0x Exchange protocol implementation in Kotlin.
 
 ## Features
