@@ -11,7 +11,6 @@
 ## Prerequisites
 * JDK >= 1.8
 * Android 6 (minSdkVersion 23) or greater
-* Use `implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"`
 
 ## Installation
 Add the JitPack to module build.gradle:
