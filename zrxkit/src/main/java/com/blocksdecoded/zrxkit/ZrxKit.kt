@@ -29,8 +29,8 @@ class ZrxKit private constructor(
     fun getExchangeInstance(address: String): ZrxExchangeWrapper =
         ZrxExchangeWrapper(address, credentials, gasInfoProvider, providerUrl)
 
-    fun getErcProxyInstance(address: String): Erc20ProxyWrapper =
-        Erc20ProxyWrapper(address, credentials, gasInfoProvider, providerUrl)
+    fun getErcProxyInstance(address: String, proxyAddress: String): Erc20ProxyWrapper =
+        Erc20ProxyWrapper(address, credentials, gasInfoProvider, providerUrl, proxyAddress)
 
     fun signOrder(order: Order): SignedOrder? = SignUtils().ecSignOrder(order, credentials)
 
@@ -44,9 +44,9 @@ class ZrxKit private constructor(
             privateKey: BigInteger,
             gasPriceProvider: GasInfoProvider,
             infuraKey: String,
-            networkType: NetworkType = NetworkType.KOVAN
+            networkType: NetworkType = NetworkType.ROPSTEN
         ): ZrxKit {
-            val relayerManager = RelayerManager(relayers)
+            val relayerManager = RelayerManager(relayers, networkType)
             val credentials = Credentials.create(ECKeyPair.create(privateKey))
 
             return ZrxKit(relayerManager, credentials, gasPriceProvider, networkType.getInfuraUrl(infuraKey))
@@ -65,6 +65,7 @@ class ZrxKit private constructor(
         private val subdomain: String
     ) {
         MAINNET(1, "mainnet"),
+        ROPSTEN(3, "ropsten"),
         KOVAN(42, "kovan");
 
         fun getInfuraUrl(infuraKey: String): String {

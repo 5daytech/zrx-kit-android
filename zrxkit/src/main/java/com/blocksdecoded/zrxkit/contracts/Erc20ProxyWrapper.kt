@@ -21,7 +21,8 @@ class Erc20ProxyWrapper(
     credentials: Credentials,
     contractGasProvider: ContractGasProvider,
     providerUrl: String,
-    private var proxyAddress: String = "0xf1ec01d6236d3cd881a0bf0130ea25fe4234003e"
+//    private var proxyAddress: String = "0xf1ec01d6236d3cd881a0bf0130ea25fe4234003e"
+    private var proxyAddress: String = "0xb1408f4c245a23c31b98d2c626777d4c0d766caa"
 ) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider) {
 
     fun lockProxy(): Flowable<TransactionReceipt> = approve(proxyAddress, BigInteger.valueOf(0))

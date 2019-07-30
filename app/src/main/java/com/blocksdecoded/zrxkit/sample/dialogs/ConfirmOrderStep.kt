@@ -29,14 +29,14 @@ class ConfirmOrderStep: BaseBottomDialog(R.layout.dialog_confirm_order_step, tru
             viewModel = ViewModelProviders.of(it).get(MainViewModel::class.java)
 
             dialog_title.text = when(side) {
-                BID -> "Sell ZRX for WETH"
-                ASK -> "Buy ZRX for WETH"
+                BID -> "Sell Token for WETH"
+                ASK -> "Buy Token for WETH"
             }
 
             confirm_trade_sell_amount.text = if (side == BID) {
-                "${Utils.df.format(takerAmount)} ZRX"
+                "${Utils.df.format(takerAmount)} Token"
             } else {
-                "${Utils.df.format(makerAmount)} ZRX"
+                "${Utils.df.format(makerAmount)} Token"
             }
 
             confirm_trade_per_token.text = "Per token: ${Utils.df.format(price)} WETH"

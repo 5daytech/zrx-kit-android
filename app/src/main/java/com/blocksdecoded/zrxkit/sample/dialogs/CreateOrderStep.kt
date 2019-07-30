@@ -37,7 +37,7 @@ class CreateOrderStep: BaseBottomDialog(R.layout.dialog_create_order_step, true)
                 BID -> "Place BUY order"
             }
 
-            create_order_base.text = "ZRX: "
+            create_order_base.text = "Token: "
 
             create_order_amount.addTextChangedListener(object : SimpleTextWatcher() {
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -53,6 +53,8 @@ class CreateOrderStep: BaseBottomDialog(R.layout.dialog_create_order_step, true)
 
             create_trade_confirm.setOnClickListener {
                 if (amount > 0.0 && price > 0.0) {
+                    Toast.makeText(context, "Processing...", Toast.LENGTH_LONG).show()
+
                     create_trade_confirm.alpha = 0.5f
                     create_trade_confirm.isEnabled = false
 

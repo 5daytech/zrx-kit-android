@@ -39,11 +39,11 @@ class RelayerApiClient(relayerConfig: RelayerConfig) {
 
     private val prefix = "${relayerConfig.suffix}${relayerConfig.version}"
 
-    fun feeRecipients(networkId: Int = 42): Flowable<List<String>> =
+    fun feeRecipients(networkId: Int = 3): Flowable<List<String>> =
         client.getFeeRecipients("$prefix/fee_recipients", networkId)
             .map { it.records }.toFlowable()
 
-    fun getOrderbook(base: String, quote: String, networkId: Int = 42): Flowable<OrderBookResponse> =
+    fun getOrderbook(base: String, quote: String, networkId: Int = 3): Flowable<OrderBookResponse> =
         client.getOrderBook(
             "$prefix/orderbook",
             base,
@@ -51,14 +51,14 @@ class RelayerApiClient(relayerConfig: RelayerConfig) {
             networkId
         ).toFlowable()
 
-    fun getAssets(limit: Int = 100, networkId: Int = 42): Flowable<List<AssetPair>> =
+    fun getAssets(limit: Int = 100, networkId: Int = 3): Flowable<List<AssetPair>> =
         client.getAssetPairs(
             "$prefix/asset_pairs",
             limit,
             networkId
         ).toFlowable().map { it.records }
 
-    fun postOrder(order: SignedOrder, networkId: Int = 42): Flowable<Unit> = client.postOrder(
+    fun postOrder(order: SignedOrder, networkId: Int = 3): Flowable<Unit> = client.postOrder(
         "$prefix/order",
         order,
         networkId
@@ -72,9 +72,6 @@ class RelayerApiClient(relayerConfig: RelayerConfig) {
             @Query("quoteAssetData") quoteAsset: String,
             @Query("networkId") int: Int
         ): Single<OrderBookResponse>
-
-        @GET
-        fun getOrder(@Url url: String, @Query("networkId") int: Int = 42): Single<OrderRecord>
 
         @GET
         fun getFeeRecipients(

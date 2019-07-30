@@ -125,13 +125,13 @@ class OrderViewHolder(
             takerAmount.toDouble().div(makerAmount.toDouble())
 
         if (side == BID) {
-            baseAmount.text = "${df.format(takerAmount)} ZRX"
+            baseAmount.text = "${df.format(takerAmount)} Token"
             quoteAmount.text = "${df.format(makerAmount)} WETH"
         } else {
-            baseAmount.text = "${df.format(makerAmount)} ZRX"
+            baseAmount.text = "${df.format(makerAmount)} Token"
             quoteAmount.text = "${df.format(takerAmount)} WETH"
         }
 
-        price.text = "${df.format(pricePerToken)} WETH per ZRX"
+        price.text = "${df.format(pricePerToken)} WETH per Token"
     }
 }

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -32,8 +31,8 @@ class BalanceFragment : Fragment() {
                 wethBalance.text = "Weth: ${balance ?: 0}"
             })
 
-            viewModel.zrxBalance.observe(this, Observer { balance ->
-                tokenBalance.text = "Zrx: ${balance ?: 0}"
+            viewModel.tokenBalance.observe(this, Observer { balance ->
+                tokenBalance.text = "Token: ${balance ?: 0}"
             })
 
             viewModel.lastBlockHeight.observe(this, Observer { lastBlock ->
