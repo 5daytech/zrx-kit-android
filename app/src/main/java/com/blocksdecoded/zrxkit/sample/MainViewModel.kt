@@ -33,18 +33,14 @@ class MainViewModel: ViewModel() {
 
     private val refreshRate = 5L
     private val infuraCredentials = EthereumKit.InfuraCredentials(
-        projectId = "2a1306f1d12f4c109a4d4fb9be46b02e",
-        secretKey = "fc479a9290b64a84a15fa6544a130218")
+        projectId = "0c3f9e6a005b40c58235da423f58b198",
+        secretKey = "57b6615fb10b4749a54b29c2894a00df")
     private val etherscanKey = "GKNHXT22ED7PRVCKZATFZQD1YI7FK9AAYE"
-    private val infuraKey = "57b6615fb10b4749a54b29c2894a00df"
     private val networkType: EthereumKit.NetworkType = EthereumKit.NetworkType.Ropsten
+    private val zrxKitNetworkType: ZrxKit.NetworkType = ZrxKit.NetworkType.Ropsten
 
     private val feeRecipient = "0x2e8da0868e46fc943766a98b8d92a0380b29ce2a"
 
-    private val proxyAddress = "0xb1408f4c245a23c31b98d2c626777d4c0d766caa"
-//    private val exchangeAddress = "0x30589010550762d2f0d06f650d8e8b6ade6dbf4b" // Kovan address
-    private val exchangeAddress = "0xbff9493f92a3df4b0429b6d00743b3cfb4c85831"
-//    private val wethAddress = "0xd0a1e359811322d97991e03f863a0c30c2cf029c" // Kovan address
     private val wethAddress = "0xc778417e063141139fce010982780140aa0cd5ab"
     private val tokenAddress = "0x30845a385581ce1dc51d651ff74689d7f4415146"
     private val decimals = 18
@@ -92,7 +88,7 @@ class MainViewModel: ViewModel() {
             "BD Relayer",
             listOf(ZrxKit.assetItemForAddress(tokenAddress) to ZrxKit.assetItemForAddress(wethAddress)),
             listOf(feeRecipient),
-            exchangeAddress,
+            zrxKitNetworkType.exchangeAddress,
             RelayerConfig("http://relayer.ropsten.fridayte.ch", "", "v2")
         )
     )
@@ -102,8 +98,8 @@ class MainViewModel: ViewModel() {
     }
 
     private fun init() {
-        val words = "grocery hedgehog relief fancy pond surprise panic slight clog female deal wash".split(" ")
-//        val words = "surprise fancy pond panic grocery hedgehog slight relief deal wash clog female".split(" ")
+//        val words = "grocery hedgehog relief fancy pond surprise panic slight clog female deal wash".split(" ")
+        val words = "surprise fancy pond panic grocery hedgehog slight relief deal wash clog female".split(" ")
 
         val seed = Mnemonic().toSeed(words)
         val hdWallet = HDWallet(seed, 1)
@@ -123,10 +119,10 @@ class MainViewModel: ViewModel() {
         wethAdapter = Erc20Adapter(App.instance, ethereumKit, "Wrapped Eth", "WETH", wethAddress, decimals)
         tokenAdapter = Erc20Adapter(App.instance, ethereumKit, "Tameki Coin V2", "TMKv2", tokenAddress, decimals)
 
-        zrxKit = ZrxKit.getInstance(relayers, privateKey, gasInfoProvider, infuraKey, ZrxKit.NetworkType.ROPSTEN)
+        zrxKit = ZrxKit.getInstance(relayers, privateKey, gasInfoProvider, infuraCredentials.secretKey, zrxKitNetworkType)
 
-        wethContract = zrxKit.getWethWrapperInstance(wethAddress)
-        zrxExchangeContract = zrxKit.getExchangeInstance(exchangeAddress)
+        wethContract = zrxKit.getWethWrapperInstance()
+        zrxExchangeContract = zrxKit.getExchangeInstance()
 
         updateEthBalance()
         updateWethBalance()
@@ -259,7 +255,7 @@ class MainViewModel: ViewModel() {
     //endregion
 
     private fun checkCoinAllowance(address: String): Flowable<Boolean> {
-        val coinWrapper = zrxKit.getErcProxyInstance(address, proxyAddress)
+        val coinWrapper = zrxKit.getErc20ProxyInstance(address)
 
         return coinWrapper.proxyAllowance(receiveAddress)
                 .flatMap { Log.d(TAG, "$address allowance $it")
@@ -394,7 +390,7 @@ class MainViewModel: ViewModel() {
 
         val order = Order(
             makerAddress = receiveAddress.toLowerCase(),
-            exchangeAddress = exchangeAddress,
+            exchangeAddress = zrxKitNetworkType.exchangeAddress,
             makerAssetData = makerAsset,
             takerAssetData = takerAsset,
             makerAssetAmount = when (side) {
