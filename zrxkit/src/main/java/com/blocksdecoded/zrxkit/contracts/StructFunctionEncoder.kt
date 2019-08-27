@@ -79,7 +79,7 @@ internal object StructFunctionEncoder {
         RawTransaction.createTransaction(
             nonce,
             5_000_000_000.toBigInteger(),
-            300_000.toBigInteger(),
+            400_000.toBigInteger(),
             to,
             data
         )
@@ -87,6 +87,19 @@ internal object StructFunctionEncoder {
     //endregion
 
     //region Public
+
+    fun getMarketBuyOrdersTransaction(nonce: BigInteger, orders: List<SignedOrder>, fillAmount: BigInteger): RawTransaction {
+        val data = encodeFunction(
+            MARKET_BUY_ORDERS,
+            listOf(orders, fillAmount, orders.map { it.signature })
+        )
+
+        return getRawTransaction(
+            nonce,
+            orders.first().exchangeAddress,
+            data
+        )
+    }
 
     fun getCancelOrderTransaction(nonce: BigInteger, order: SignedOrder): RawTransaction =
         getRawTransaction(
@@ -107,19 +120,6 @@ internal object StructFunctionEncoder {
         return getRawTransaction(
             nonce,
             order.exchangeAddress,
-            data
-        )
-    }
-
-    fun getMarketBuyOrdersTransaction(nonce: BigInteger, orders: List<SignedOrder>, fillAmount: BigInteger): RawTransaction {
-        val data = encodeFunction(
-            MARKET_BUY_ORDERS,
-            listOf(orders, fillAmount, orders.map { it.signature })
-        )
-
-        return getRawTransaction(
-            nonce,
-            orders.first().exchangeAddress,
             data
         )
     }

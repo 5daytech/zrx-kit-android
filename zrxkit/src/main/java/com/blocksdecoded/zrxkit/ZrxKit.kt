@@ -35,6 +35,8 @@ class ZrxKit private constructor(
 
     fun signOrder(order: Order): SignedOrder? = SignUtils().ecSignOrder(order, credentials)
 
+
+
     companion object {
         private val minAmount = BigInteger("0")
 

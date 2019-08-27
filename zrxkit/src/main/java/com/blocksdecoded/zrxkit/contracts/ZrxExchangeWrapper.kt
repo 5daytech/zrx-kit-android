@@ -51,9 +51,13 @@ class ZrxExchangeWrapper(
 
     //region Public
 
-    fun cancelOrder(order: SignedOrder): Flowable<String> {
+    fun marketBuyOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String> {
         return getNonce().flatMap {
-            val transaction = StructFunctionEncoder.getCancelOrderTransaction(it, order)
+            val transaction = StructFunctionEncoder.getMarketBuyOrdersTransaction(
+                it,
+                orders,
+                fillAmount
+            )
 
             sendTransaction<String>(transaction)
         }
@@ -71,25 +75,9 @@ class ZrxExchangeWrapper(
         }
     }
 
-    fun marketBuyOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String> {
+    fun cancelOrder(order: SignedOrder): Flowable<String> {
         return getNonce().flatMap {
-            val transaction = StructFunctionEncoder.getMarketBuyOrdersTransaction(
-                it,
-                orders,
-                fillAmount
-            )
-
-            sendTransaction<String>(transaction)
-        }
-    }
-
-    fun marketSellOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String> {
-        return getNonce().flatMap {
-            val transaction = StructFunctionEncoder.getMarketSellOrdersTransaction(
-                it,
-                orders,
-                fillAmount
-            )
+            val transaction = StructFunctionEncoder.getCancelOrderTransaction(it, order)
 
             sendTransaction<String>(transaction)
         }
@@ -105,6 +93,18 @@ class ZrxExchangeWrapper(
         return web3j.ethCall(transaction, defaultBlockParameter)
             .flowable()
             .map { StructFunctionEncoder.decodeOrdersInfo(it.value) }
+    }
+
+    fun marketSellOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String> {
+        return getNonce().flatMap {
+            val transaction = StructFunctionEncoder.getMarketSellOrdersTransaction(
+                it,
+                orders,
+                fillAmount
+            )
+
+            sendTransaction<String>(transaction)
+        }
     }
 
     //endregion

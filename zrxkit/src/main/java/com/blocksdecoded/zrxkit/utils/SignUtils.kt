@@ -84,6 +84,7 @@ class SignUtils {
         encoder.validateStructuredData(structured)
 
         val eipOrder = encoder.hashStructuredData()
+
         val result = Sign.signMessage(eipOrder, credentials.ecKeyPair, false)
 
         val builder = ByteArrayBuilder()
