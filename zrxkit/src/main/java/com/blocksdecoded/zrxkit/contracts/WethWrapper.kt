@@ -1,5 +1,6 @@
 package com.blocksdecoded.zrxkit.contracts
 
+import com.blocksdecoded.zrxkit.Constants.ETH_DECIMALS
 import io.reactivex.Flowable
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Address
@@ -12,6 +13,7 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt
 import org.web3j.protocol.http.HttpService
 import org.web3j.tx.Contract
 import org.web3j.tx.gas.ContractGasProvider
+import java.math.BigDecimal
 import java.math.BigInteger
 
 class WethWrapper(
@@ -20,6 +22,18 @@ class WethWrapper(
     contractGasProvider: ContractGasProvider,
     providerUrl: String
 ) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider) {
+
+    val depositEstimatedPrice: BigDecimal
+        get() = (depositGasLimit * gasProvider.getGasPrice(FUNC_DEPOSIT))
+            .toBigDecimal()
+            .movePointLeft(ETH_DECIMALS)
+            .stripTrailingZeros()
+
+    val withdrawEstimatedPrice: BigDecimal
+        get() = (withdrawGasLimit * gasProvider.getGasPrice(FUNC_WITHDRAW))
+            .toBigDecimal()
+            .movePointLeft(ETH_DECIMALS)
+            .stripTrailingZeros()
 
     val depositGasLimit: BigInteger
         get() = gasProvider.getGasLimit(FUNC_DEPOSIT)
