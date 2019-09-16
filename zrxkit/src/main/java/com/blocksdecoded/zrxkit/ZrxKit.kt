@@ -19,9 +19,9 @@ import java.math.BigInteger
 class ZrxKit private constructor(
     val relayerManager: IRelayerManager,
     private val credentials: Credentials,
-    private val gasInfoProvider: ContractGasProvider,
     private val providerUrl: String,
-    private val networkType: NetworkType
+    private val networkType: NetworkType,
+    private val gasInfoProvider: ContractGasProvider
 ) {
 
     fun getWethWrapperInstance(wrapperAddress: String = networkType.wethAddress): WethWrapper =
@@ -35,9 +35,9 @@ class ZrxKit private constructor(
 
     fun signOrder(order: Order): SignedOrder? = SignUtils().ecSignOrder(order, credentials)
 
-
-
     companion object {
+        private val defaultGasProvider: GasInfoProvider = object : ZrxKit.GasInfoProvider() {}
+
         private val minAmount = BigInteger("0")
 
         private val maxAmount = BigInteger("999999999999999999")
@@ -45,14 +45,14 @@ class ZrxKit private constructor(
         fun getInstance(
             relayers: List<Relayer>,
             privateKey: BigInteger,
-            gasPriceProvider: GasInfoProvider,
             infuraKey: String,
-            networkType: NetworkType = NetworkType.Ropsten
+            networkType: NetworkType = NetworkType.Ropsten,
+            gasPriceProvider: GasInfoProvider = defaultGasProvider
         ): ZrxKit {
             val relayerManager = RelayerManager(relayers, networkType)
             val credentials = Credentials.create(ECKeyPair.create(privateKey))
 
-            return ZrxKit(relayerManager, credentials, gasPriceProvider, networkType.getInfuraUrl(infuraKey), networkType)
+            return ZrxKit(relayerManager, credentials, networkType.getInfuraUrl(infuraKey), networkType, gasPriceProvider)
         }
 
         fun assetItemForAddress(address: String, type: EAssetProxyId = EAssetProxyId.ERC20): AssetItem = AssetItem(
@@ -102,6 +102,14 @@ class ZrxKit private constructor(
     }
 
     abstract class GasInfoProvider: ContractGasProvider {
+        override fun getGasLimit(contractFunc: String?): BigInteger = when(contractFunc) {
+            WethWrapper.FUNC_DEPOSIT -> 40000.toBigInteger()
+            WethWrapper.FUNC_WITHDRAW -> 60000.toBigInteger()
+            else -> 250_000.toBigInteger()
+        }
+
+        override fun getGasPrice(contractFunc: String?): BigInteger = 5_000_000_000L.toBigInteger()
+
         override fun getGasLimit(): BigInteger = getGasLimit("")
         override fun getGasPrice(): BigInteger = getGasPrice("")
     }

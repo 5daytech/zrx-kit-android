@@ -119,7 +119,7 @@ class MainViewModel: ViewModel() {
         wethAdapter = Erc20Adapter(App.instance, ethereumKit, "Wrapped Eth", "WETH", wethAddress, decimals)
         tokenAdapter = Erc20Adapter(App.instance, ethereumKit, "Tameki Coin V2", "TMKv2", tokenAddress, decimals)
 
-        zrxKit = ZrxKit.getInstance(relayers, privateKey, gasInfoProvider, infuraCredentials.secretKey, zrxKitNetworkType)
+        zrxKit = ZrxKit.getInstance(relayers, privateKey, infuraCredentials.secretKey, zrxKitNetworkType, gasInfoProvider)
 
         wethContract = zrxKit.getWethWrapperInstance()
         zrxExchangeContract = zrxKit.getExchangeInstance()

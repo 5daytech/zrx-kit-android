@@ -21,6 +21,12 @@ class WethWrapper(
     providerUrl: String
 ) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider) {
 
+    val depositGasLimit: BigInteger
+        get() = gasProvider.getGasLimit(FUNC_DEPOSIT)
+
+    val withdrawGasLimit: BigInteger
+        get() = gasProvider.getGasLimit(FUNC_WITHDRAW)
+
     val totalSupply: Flowable<BigInteger>
         get() {
             val function = Function(
@@ -81,12 +87,12 @@ class WethWrapper(
     //endregion
 
     companion object {
-        private const val FUNC_DEPOSIT = "deposit"
-        private const val FUNC_WITHDRAW = "withdraw"
-        private const val FUNC_TOTAL_SUPPLY = "totalSupply"
-        private const val FUNC_TRANSFER = "transfer"
-        private const val FUNC_APPROVE = "approve"
-        private const val FUNC_TRANSFER_FROM = "transferFrom"
+        internal const val FUNC_DEPOSIT = "deposit"
+        internal const val FUNC_WITHDRAW = "withdraw"
+        internal const val FUNC_TOTAL_SUPPLY = "totalSupply"
+        internal const val FUNC_TRANSFER = "transfer"
+        internal const val FUNC_APPROVE = "approve"
+        internal const val FUNC_TRANSFER_FROM = "transferFrom"
 
         private const val BINARY = ""
     }
