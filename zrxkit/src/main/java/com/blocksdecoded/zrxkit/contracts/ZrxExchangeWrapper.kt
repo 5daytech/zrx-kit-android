@@ -2,7 +2,6 @@ package com.blocksdecoded.zrxkit.contracts
 
 import com.blocksdecoded.zrxkit.model.OrderInfo
 import com.blocksdecoded.zrxkit.model.SignedOrder
-import com.blocksdecoded.zrxkit.toEther
 import io.reactivex.Flowable
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
@@ -13,7 +12,6 @@ import org.web3j.protocol.http.HttpService
 import org.web3j.tx.Contract
 import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.utils.Numeric
-import java.math.BigDecimal
 import java.math.BigInteger
 
 class ZrxExchangeWrapper(
@@ -24,14 +22,6 @@ class ZrxExchangeWrapper(
 ) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider) {
 
     private val functionEncoder = StructFunctionEncoder(gasProvider)
-
-    val marketBuyEstimatedPrice: Flowable<BigDecimal>
-        get() {
-            val price = gasProvider.getGasLimit("marketBuyOrders") *
-                    gasProvider.getGasPrice("marketBuyOrders")
-
-            return Flowable.just(price.toEther())
-        }
 
     //region Private
 

@@ -11,9 +11,11 @@ import com.blocksdecoded.zrxkit.relayer.IRelayerManager
 import com.blocksdecoded.zrxkit.relayer.RelayerManager
 import com.blocksdecoded.zrxkit.relayer.model.Relayer
 import com.blocksdecoded.zrxkit.utils.SignUtils
+import io.reactivex.Flowable
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.ECKeyPair
 import org.web3j.tx.gas.ContractGasProvider
+import java.math.BigDecimal
 import java.math.BigInteger
 
 class ZrxKit private constructor(
@@ -34,6 +36,14 @@ class ZrxKit private constructor(
         Erc20ProxyWrapper(tokenAddress, credentials, gasInfoProvider, providerUrl, proxyAddress)
 
     fun signOrder(order: Order): SignedOrder? = SignUtils().ecSignOrder(order, credentials)
+
+    val marketBuyEstimatedPrice: Flowable<BigDecimal>
+        get() {
+            val price = gasInfoProvider.getGasLimit("marketBuyOrders") *
+                    gasInfoProvider.getGasPrice("marketBuyOrders")
+
+            return Flowable.just(price.toEther())
+        }
 
     companion object {
         private val defaultGasProvider: GasInfoProvider = object : ZrxKit.GasInfoProvider() {}
