@@ -105,7 +105,8 @@ class ZrxKit private constructor(
         override fun getGasLimit(contractFunc: String?): BigInteger = when(contractFunc) {
             WethWrapper.FUNC_DEPOSIT -> 40000.toBigInteger()
             WethWrapper.FUNC_WITHDRAW -> 60000.toBigInteger()
-            else -> 250_000.toBigInteger()
+            Erc20ProxyWrapper.FUNC_APPROVE -> 80000.toBigInteger()
+            else -> 400_000.toBigInteger()
         }
 
         override fun getGasPrice(contractFunc: String?): BigInteger = 5_000_000_000L.toBigInteger()

@@ -21,6 +21,8 @@ class ZrxExchangeWrapper(
     providerUrl: String
 ) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider) {
 
+    private val functionEncoder = StructFunctionEncoder(gasProvider)
+
     //region Private
 
     private fun getNonce(): Flowable<BigInteger> =
@@ -53,7 +55,7 @@ class ZrxExchangeWrapper(
 
     fun marketBuyOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String> {
         return getNonce().flatMap {
-            val transaction = StructFunctionEncoder.getMarketBuyOrdersTransaction(
+            val transaction = functionEncoder.getMarketBuyOrdersTransaction(
                 it,
                 orders,
                 fillAmount
@@ -65,7 +67,7 @@ class ZrxExchangeWrapper(
 
     fun fillOrder(order: SignedOrder, fillAmount: BigInteger): Flowable<String> {
         return getNonce().flatMap {
-            val transaction = StructFunctionEncoder.getFillOrderTransaction(
+            val transaction = functionEncoder.getFillOrderTransaction(
                 it,
                 order,
                 fillAmount
@@ -77,7 +79,7 @@ class ZrxExchangeWrapper(
 
     fun cancelOrder(order: SignedOrder): Flowable<String> {
         return getNonce().flatMap {
-            val transaction = StructFunctionEncoder.getCancelOrderTransaction(it, order)
+            val transaction = functionEncoder.getCancelOrderTransaction(it, order)
 
             sendTransaction<String>(transaction)
         }
@@ -87,17 +89,17 @@ class ZrxExchangeWrapper(
         val transaction = Transaction.createEthCallTransaction(
             credentials.address,
             contractAddress,
-            StructFunctionEncoder.encodedOrdersInfoData(orders)
+            functionEncoder.encodedOrdersInfoData(orders)
         )
 
         return web3j.ethCall(transaction, defaultBlockParameter)
             .flowable()
-            .map { StructFunctionEncoder.decodeOrdersInfo(it.value) }
+            .map { functionEncoder.decodeOrdersInfo(it.value) }
     }
 
     fun marketSellOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String> {
         return getNonce().flatMap {
-            val transaction = StructFunctionEncoder.getMarketSellOrdersTransaction(
+            val transaction = functionEncoder.getMarketSellOrdersTransaction(
                 it,
                 orders,
                 fillAmount

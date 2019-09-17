@@ -48,8 +48,8 @@ class Erc20ProxyWrapper(
     }
 
     companion object {
-        private const val FUNC_ALLOWANCE = "allowance"
-        private const val FUNC_APPROVE = "approve"
+        internal const val FUNC_ALLOWANCE = "allowance"
+        internal const val FUNC_APPROVE = "approve"
 
         private const val BINARY = ""
     }

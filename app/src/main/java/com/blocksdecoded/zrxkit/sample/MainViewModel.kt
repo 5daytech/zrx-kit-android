@@ -47,7 +47,7 @@ class MainViewModel: ViewModel() {
 
     private val gasInfoProvider = object : ZrxKit.GasInfoProvider() {
         override fun getGasLimit(contractFunc: String?): BigInteger =
-            200_000.toBigInteger()
+            400_000.toBigInteger()
 
         override fun getGasPrice(contractFunc: String?): BigInteger =
             5_000_000_000.toBigInteger() // Gas price 5 GWei

@@ -1,7 +1,7 @@
 package com.blocksdecoded.zrxkit.contracts
 
 import com.blocksdecoded.zrxkit.clearPrefix
-import com.blocksdecoded.zrxkit.contracts.StructFunctionEncoder.EFunction.*
+import com.blocksdecoded.zrxkit.contracts.StructFunctionEncoder.ExchangeFunction.*
 import com.blocksdecoded.zrxkit.decodePrefixedHex
 import com.blocksdecoded.zrxkit.hexStringToByteArray
 import com.blocksdecoded.zrxkit.model.OrderInfo
@@ -12,13 +12,13 @@ import com.esaulpaugh.headlong.abi.Tuple
 import org.bouncycastle.util.encoders.Hex
 import org.web3j.abi.datatypes.Address
 import org.web3j.crypto.RawTransaction
+import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.utils.Numeric
 import java.math.BigInteger
 
-internal object StructFunctionEncoder {
-
-    internal const val ORDER_SIGNATURE: String = "(address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes,bytes)"
-    internal const val ORDER_INFO_SIGNATURE: String = "(uint256,bytes32,uint256)"
+internal class StructFunctionEncoder(
+    private val gasProvider: ContractGasProvider
+) {
 
     //region Private
 
@@ -66,7 +66,7 @@ internal object StructFunctionEncoder {
         return Tuple(*items.toTypedArray())
     }
 
-    private fun encodeFunction(type: EFunction, data: List<Any>, prefixed: Boolean = true): String {
+    private fun encodeFunction(type: ExchangeFunction, data: List<Any>, prefixed: Boolean = true): String {
         val buffer = type.function.encodeCall(encodeData(data))
 
         return if (prefixed)
@@ -75,11 +75,11 @@ internal object StructFunctionEncoder {
             Numeric.toHexString(buffer.array())
     }
 
-    private fun getRawTransaction(nonce: BigInteger, to: String, data: String): RawTransaction =
+    private fun getRawTransaction(function: ExchangeFunction, nonce: BigInteger, to: String, data: String): RawTransaction =
         RawTransaction.createTransaction(
             nonce,
-            5_000_000_000.toBigInteger(),
-            400_000.toBigInteger(),
+            gasProvider.getGasPrice(function.functionName),
+            gasProvider.getGasLimit(function.functionName),
             to,
             data
         )
@@ -95,6 +95,7 @@ internal object StructFunctionEncoder {
         )
 
         return getRawTransaction(
+            MARKET_BUY_ORDERS,
             nonce,
             orders.first().exchangeAddress,
             data
@@ -103,6 +104,7 @@ internal object StructFunctionEncoder {
 
     fun getCancelOrderTransaction(nonce: BigInteger, order: SignedOrder): RawTransaction =
         getRawTransaction(
+            CANCEL_ORDER,
             nonce,
             order.exchangeAddress,
             encodeFunction(
@@ -118,6 +120,7 @@ internal object StructFunctionEncoder {
         )
 
         return getRawTransaction(
+            FILL_ORDER,
             nonce,
             order.exchangeAddress,
             data
@@ -131,6 +134,7 @@ internal object StructFunctionEncoder {
         )
 
         return getRawTransaction(
+            MARKET_SELL_ORDERS,
             nonce,
             orders.first().exchangeAddress,
             data
@@ -164,7 +168,12 @@ internal object StructFunctionEncoder {
 
     //endregion
 
-    enum class EFunction(
+    companion object {
+        internal const val ORDER_SIGNATURE: String = "(address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes,bytes)"
+        internal const val ORDER_INFO_SIGNATURE: String = "(uint256,bytes32,uint256)"
+    }
+
+    enum class ExchangeFunction(
         private val signature: String,
         private val outputs: String = ""
     ) {
@@ -187,5 +196,7 @@ internal object StructFunctionEncoder {
             } else {
                 Function(signature, outputs)
             }
+
+        val functionName: String = signature.substringBefore("(")
     }
 }
