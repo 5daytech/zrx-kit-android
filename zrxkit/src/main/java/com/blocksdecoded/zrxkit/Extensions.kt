@@ -1,6 +1,9 @@
 package com.blocksdecoded.zrxkit
 
+import com.blocksdecoded.zrxkit.Constants.ETH_DECIMALS
 import org.bouncycastle.util.encoders.Hex
+import java.math.BigDecimal
+import java.math.BigInteger
 
 internal fun ByteArray?.toHexString(): String {
     return this?.joinToString(separator = "") {
@@ -20,3 +23,7 @@ internal fun String.prefixed(): String = "0x$this"
 internal fun String.decodePrefixedHex(): ByteArray = Hex.decode(this.clearPrefix())
 
 internal fun String.clearPrefix(): String = this.substring(2)
+
+internal fun BigDecimal.toEther(): BigDecimal = this.movePointLeft(ETH_DECIMALS).stripTrailingZeros()
+
+internal fun BigInteger.toEther(): BigDecimal = this.toBigDecimal().movePointLeft(ETH_DECIMALS).stripTrailingZeros()
