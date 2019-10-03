@@ -19,8 +19,6 @@ import com.blocksdecoded.zrxkit.sample.core.EOrderSide.*
 import com.blocksdecoded.zrxkit.sample.dialogs.ConfirmOrderStep
 import com.blocksdecoded.zrxkit.sample.dialogs.CreateOrderStep
 import kotlinx.android.synthetic.main.fragment_orders.*
-import java.text.DecimalFormat
-import java.text.SimpleDateFormat
 
 class OrdersFragment: Fragment() {
 
