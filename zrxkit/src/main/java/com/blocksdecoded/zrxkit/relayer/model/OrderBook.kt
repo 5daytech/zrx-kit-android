@@ -11,9 +11,9 @@ data class OrderBook(
 
 data class OrderRecord(
     val order: SignedOrder,
-    val metaData: OrderMetaData
+    val metaData: OrderMetaData?
 )
 
 data class OrderMetaData(
-    val orderHash: String
+    val orderHash: String?
 )
