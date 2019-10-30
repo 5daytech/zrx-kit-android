@@ -1,9 +1,9 @@
 package com.blocksdecoded.zrxkit.utils
 
 import com.blocksdecoded.zrxkit.utils.Constants.ETH_DECIMALS
-import org.bouncycastle.util.encoders.Hex
 import java.math.BigDecimal
 import java.math.BigInteger
+import org.bouncycastle.util.encoders.Hex
 
 internal fun ByteArray?.toHexString(): String {
     return this?.joinToString(separator = "") {

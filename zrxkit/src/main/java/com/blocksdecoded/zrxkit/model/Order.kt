@@ -14,4 +14,4 @@ data class Order(
     override val makerFee: String,
     override val takerFee: String,
     override val salt: String
-): IOrder
+) : IOrder

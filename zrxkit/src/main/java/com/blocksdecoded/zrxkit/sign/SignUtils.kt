@@ -2,23 +2,23 @@ package com.blocksdecoded.zrxkit.sign
 
 import com.blocksdecoded.zrxkit.InvalidSignatureException
 import com.blocksdecoded.zrxkit.UnsupportedSignatureType
-import com.blocksdecoded.zrxkit.sign.eip712.Eip712Data
-import com.blocksdecoded.zrxkit.sign.eip712.Eip712Encoder
 import com.blocksdecoded.zrxkit.model.ESignatureType
 import com.blocksdecoded.zrxkit.model.ESignatureType.*
 import com.blocksdecoded.zrxkit.model.IOrder
 import com.blocksdecoded.zrxkit.model.Order
 import com.blocksdecoded.zrxkit.model.SignedOrder
+import com.blocksdecoded.zrxkit.sign.eip712.Eip712Data
+import com.blocksdecoded.zrxkit.sign.eip712.Eip712Encoder
 import com.blocksdecoded.zrxkit.utils.*
 import com.blocksdecoded.zrxkit.utils.toHexString
 import com.fasterxml.jackson.core.util.ByteArrayBuilder
+import java.math.BigInteger
+import java.security.SignatureException
+import kotlin.experimental.and
 import org.bouncycastle.util.encoders.Hex
 import org.web3j.crypto.*
 import org.web3j.crypto.Sign.recoverFromSignature
 import org.web3j.utils.Assertions.verifyPrecondition
-import java.math.BigInteger
-import java.security.SignatureException
-import kotlin.experimental.and
 
 class SignUtils {
     private val V_INDEX = 0
@@ -53,7 +53,7 @@ class SignUtils {
     private fun getDomain(order: IOrder): Eip712Data.EIP712Domain =
         Eip712Data.EIP712Domain("0x Protocol", "2", 0, order.exchangeAddress)
 
-    private fun orderToMap(order: IOrder) : HashMap<String, Any> {
+    private fun orderToMap(order: IOrder): HashMap<String, Any> {
         val result = hashMapOf<String, Any>()
 
         result["makerAddress"] = order.makerAddress
@@ -72,7 +72,7 @@ class SignUtils {
         return result
     }
 
-    private fun getOrderSignature(order: IOrder, credentials: Credentials) : String {
+    private fun getOrderSignature(order: IOrder, credentials: Credentials): String {
         val structured = Eip712Data.EIP712Message(
             types,
             "Order",
@@ -137,7 +137,7 @@ class SignUtils {
 
     //region Public
 
-    fun ecSignOrder(order: Order, credentials: Credentials) : SignedOrder? {
+    fun ecSignOrder(order: Order, credentials: Credentials): SignedOrder? {
         val signature = getOrderSignature(order, credentials)
 
         val signedOrder = SignedOrder.fromOrder(order, signature)
@@ -148,8 +148,7 @@ class SignUtils {
             null
     }
 
-
-    fun isValidSignature(signedOrder: SignedOrder) : Boolean {
+    fun isValidSignature(signedOrder: SignedOrder): Boolean {
         val structured = Eip712Data.EIP712Message(
             types,
             "Order",
@@ -166,7 +165,7 @@ class SignUtils {
         for (i in 27..28) {
             val restoredVrs = rsvFromSignatureHex(signedOrder.signature)
 
-            val key = when(type){
+            val key = when (type) {
                 EIP712 -> signedMessageHashToKey(dataHash, restoredVrs)
                 ETH_SIGN -> Sign.signedPrefixedMessageToKey(dataHash, restoredVrs)
 
@@ -193,7 +192,7 @@ class SignUtils {
     fun getSignatureType(signatureHex: String): ESignatureType {
         val type = Hex.decode(signatureHex.clearPrefix()).last().toInt()
 
-        return when(type) {
+        return when (type) {
             2 -> EIP712
             3 -> ETH_SIGN
             else -> throw UnsupportedSignatureType(type)

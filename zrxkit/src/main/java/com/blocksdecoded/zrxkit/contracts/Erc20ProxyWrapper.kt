@@ -2,6 +2,7 @@ package com.blocksdecoded.zrxkit.contracts
 
 import com.blocksdecoded.zrxkit.utils.Constants.MAX_ALLOWANCE
 import io.reactivex.Flowable
+import java.math.BigInteger
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Address
 import org.web3j.abi.datatypes.Function
@@ -13,7 +14,6 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt
 import org.web3j.protocol.http.HttpService
 import org.web3j.tx.Contract
 import org.web3j.tx.gas.ContractGasProvider
-import java.math.BigInteger
 
 internal class Erc20ProxyWrapper(
     contractAddress: String,

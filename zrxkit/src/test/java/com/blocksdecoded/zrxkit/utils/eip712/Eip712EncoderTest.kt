@@ -1,12 +1,12 @@
 package com.blocksdecoded.zrxkit.utils.eip712
 
-import com.blocksdecoded.zrxkit.utils.toHexString
 import com.blocksdecoded.zrxkit.model.ESignatureType
 import com.blocksdecoded.zrxkit.model.Order
 import com.blocksdecoded.zrxkit.model.SignedOrder
 import com.blocksdecoded.zrxkit.sign.SignUtils
 import com.blocksdecoded.zrxkit.sign.eip712.Eip712Data
 import com.blocksdecoded.zrxkit.sign.eip712.Eip712Encoder
+import com.blocksdecoded.zrxkit.utils.toHexString
 import org.junit.Assert.*
 import org.junit.Test
 import org.web3j.crypto.*
@@ -75,27 +75,27 @@ class Eip712EncoderTest {
     fun `Mail sign`() {
         val encoder = Eip712Encoder(message)
 
-        //Check type encoding
+        // Check type encoding
         assertEquals("Mail(Person from,Person to,string contents)Person(string name,address wallet)",
             encoder.encodeType("Mail"))
 
-        //Check type hash
+        // Check type hash
         assertEquals("0xa0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2",
             "0x${encoder.hashType("Mail").toHexString()}")
 
-        //Check type data encoding
+        // Check type data encoding
         assertEquals("0xa0cedeb2dc280ba39b857546d74f5549c3a1d7bdc2dd96bf881f76108e23dac2fc71e5fa27ff56c350aa531bc129ebdf613b772b6604664f5d8dbe21b85eb0c8cd54f074a4af31b4411ff6a60c9719dbd559c221c8ac3492d9d872b041d703d1b5aadf3154a261abdd9086fc627b61efca26ae5702701d05cd2305f7c52a2fc8",
             "0x${encoder.encodeData(message.primaryType, getMessage()).toHexString()}")
 
-        //Check type data hash
+        // Check type data hash
         assertEquals("0xc52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e",
             "0x${encoder.hashMessage(message.primaryType, getMessage()).toHexString()}")
 
-        //Check domain hash
+        // Check domain hash
         assertEquals("0xf2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f",
             "0x${encoder.hashDomain().toHexString()}")
 
-        //Check hash sign
+        // Check hash sign
         assertEquals("0xbe609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2",
             "0x${encoder.hashStructuredData().toHexString()}")
 

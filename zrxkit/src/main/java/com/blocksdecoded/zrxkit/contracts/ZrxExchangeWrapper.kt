@@ -3,6 +3,7 @@ package com.blocksdecoded.zrxkit.contracts
 import com.blocksdecoded.zrxkit.model.OrderInfo
 import com.blocksdecoded.zrxkit.model.SignedOrder
 import io.reactivex.Flowable
+import java.math.BigInteger
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.RawTransaction
 import org.web3j.crypto.TransactionEncoder
@@ -12,7 +13,6 @@ import org.web3j.protocol.http.HttpService
 import org.web3j.tx.Contract
 import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.utils.Numeric
-import java.math.BigInteger
 
 internal class ZrxExchangeWrapper(
     contractAddress: String,

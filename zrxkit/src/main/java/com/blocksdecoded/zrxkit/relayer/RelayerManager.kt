@@ -1,11 +1,11 @@
 package com.blocksdecoded.zrxkit.relayer
 
 import com.blocksdecoded.zrxkit.ZrxKit
+import com.blocksdecoded.zrxkit.model.SignedOrder
 import com.blocksdecoded.zrxkit.relayer.model.AssetPair
+import com.blocksdecoded.zrxkit.relayer.model.Relayer
 import com.blocksdecoded.zrxkit.relayer.remote.OrderBookResponse
 import com.blocksdecoded.zrxkit.relayer.remote.RelayerApiClient
-import com.blocksdecoded.zrxkit.model.SignedOrder
-import com.blocksdecoded.zrxkit.relayer.model.Relayer
 import io.reactivex.Flowable
 
 class RelayerManager(

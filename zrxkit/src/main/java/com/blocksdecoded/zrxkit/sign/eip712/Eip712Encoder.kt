@@ -1,26 +1,22 @@
 package com.blocksdecoded.zrxkit.sign.eip712
 
 import android.annotation.SuppressLint
+import android.util.Pair
+import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.ByteArrayOutputStream
 import java.lang.reflect.InvocationTargetException
-
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
 import java.util.TreeSet
 import java.util.regex.Pattern
-
-import android.util.Pair
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.bouncycastle.util.encoders.Hex
-
 import org.web3j.abi.TypeEncoder
 import org.web3j.abi.datatypes.Type
 import org.web3j.abi.datatypes.generated.AbiTypes
-import org.web3j.utils.Numeric
-
 import org.web3j.crypto.Hash.sha3
 import org.web3j.crypto.Hash.sha3String
+import org.web3j.utils.Numeric
 
 internal class Eip712Encoder {
     private var jsonMessageInString: String = ""
@@ -346,7 +342,6 @@ internal class Eip712Encoder {
                 } catch (e: InvocationTargetException) {
                     continue
                 }
-
             }
 
             if (!atleastOneConstructorExistsForGivenParametersType) {

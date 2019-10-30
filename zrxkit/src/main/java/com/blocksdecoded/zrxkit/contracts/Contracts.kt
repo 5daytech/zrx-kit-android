@@ -3,9 +3,9 @@ package com.blocksdecoded.zrxkit.contracts
 import com.blocksdecoded.zrxkit.model.OrderInfo
 import com.blocksdecoded.zrxkit.model.SignedOrder
 import io.reactivex.Flowable
-import org.web3j.protocol.core.methods.response.TransactionReceipt
 import java.math.BigDecimal
 import java.math.BigInteger
+import org.web3j.protocol.core.methods.response.TransactionReceipt
 
 interface IErc20Proxy {
     fun lockProxy(): Flowable<TransactionReceipt>

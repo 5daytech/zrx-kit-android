@@ -40,6 +40,14 @@ android {
     lintOptions {
         warning 'InvalidPackage'
     }
+
+    kotlinter {
+        ignoreFailures = false
+        reporters = ['checkstyle', 'plain']
+        experimentalRules = false
+        fileBatchSize = 30
+        disabledRules = ["no-wildcard-imports"]
+    }
 }
 
 dependencies {

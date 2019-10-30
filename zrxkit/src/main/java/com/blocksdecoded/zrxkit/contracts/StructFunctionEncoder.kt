@@ -1,20 +1,20 @@
 package com.blocksdecoded.zrxkit.contracts
 
-import com.blocksdecoded.zrxkit.utils.clearPrefix
 import com.blocksdecoded.zrxkit.contracts.StructFunctionEncoder.ExchangeFunction.*
-import com.blocksdecoded.zrxkit.utils.decodePrefixedHex
-import com.blocksdecoded.zrxkit.utils.hexStringToByteArray
 import com.blocksdecoded.zrxkit.model.OrderInfo
 import com.blocksdecoded.zrxkit.model.SignedOrder
+import com.blocksdecoded.zrxkit.utils.clearPrefix
+import com.blocksdecoded.zrxkit.utils.decodePrefixedHex
+import com.blocksdecoded.zrxkit.utils.hexStringToByteArray
 import com.blocksdecoded.zrxkit.utils.prefixed
 import com.esaulpaugh.headlong.abi.Function
 import com.esaulpaugh.headlong.abi.Tuple
+import java.math.BigInteger
 import org.bouncycastle.util.encoders.Hex
 import org.web3j.abi.datatypes.Address
 import org.web3j.crypto.RawTransaction
 import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.utils.Numeric
-import java.math.BigInteger
 
 internal class StructFunctionEncoder(
     private val gasProvider: ContractGasProvider
@@ -41,7 +41,7 @@ internal class StructFunctionEncoder(
         val items = ArrayList<Any>()
 
         args.forEach {
-            val element = when(it) {
+            val element = when (it) {
                 is SignedOrder -> getTupleFromOrder(it)
 
                 is String -> it.decodePrefixedHex()
@@ -141,7 +141,7 @@ internal class StructFunctionEncoder(
         )
     }
 
-    fun encodedOrdersInfoData(orders: List<SignedOrder>) : String =
+    fun encodedOrdersInfoData(orders: List<SignedOrder>): String =
         encodeFunction(ORDERS_INFO, listOf(orders), prefixed = false)
 
     fun decodeOrdersInfo(data: String): List<OrderInfo> {

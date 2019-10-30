@@ -11,11 +11,11 @@ import com.blocksdecoded.zrxkit.relayer.model.Relayer
 import com.blocksdecoded.zrxkit.sign.SignUtils
 import com.blocksdecoded.zrxkit.utils.toEther
 import io.reactivex.Flowable
+import java.math.BigDecimal
+import java.math.BigInteger
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.ECKeyPair
 import org.web3j.tx.gas.ContractGasProvider
-import java.math.BigDecimal
-import java.math.BigInteger
 
 class ZrxKit private constructor(
     val relayerManager: IRelayerManager,
@@ -110,8 +110,8 @@ class ZrxKit private constructor(
         }
     }
 
-    abstract class GasInfoProvider: ContractGasProvider {
-        override fun getGasLimit(contractFunc: String?): BigInteger = when(contractFunc) {
+    abstract class GasInfoProvider : ContractGasProvider {
+        override fun getGasLimit(contractFunc: String?): BigInteger = when (contractFunc) {
             WethWrapper.FUNC_DEPOSIT -> 40000.toBigInteger()
             WethWrapper.FUNC_WITHDRAW -> 60000.toBigInteger()
             Erc20ProxyWrapper.FUNC_APPROVE -> 80000.toBigInteger()

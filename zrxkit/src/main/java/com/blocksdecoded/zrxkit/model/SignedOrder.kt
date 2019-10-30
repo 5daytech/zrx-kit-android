@@ -15,7 +15,7 @@ data class SignedOrder(
     override val takerFee: String,
     override val salt: String,
     val signature: String
-): IOrder {
+) : IOrder {
 
     companion object {
         fun fromOrder(order: IOrder, signature: String): SignedOrder =
@@ -36,5 +36,4 @@ data class SignedOrder(
                 signature
             )
     }
-
 }

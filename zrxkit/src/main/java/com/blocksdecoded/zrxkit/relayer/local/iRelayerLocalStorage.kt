@@ -1,4 +1,3 @@
 package com.blocksdecoded.zrxkit.relayer.local
 
-interface iRelayerLocalStorage {
-}
+interface iRelayerLocalStorage

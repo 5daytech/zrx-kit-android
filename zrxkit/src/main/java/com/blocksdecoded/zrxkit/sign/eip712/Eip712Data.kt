@@ -1,9 +1,8 @@
 package com.blocksdecoded.zrxkit.sign.eip712
 
-import java.util.HashMap
-
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.HashMap
 
 internal class Eip712Data {
     class Entry @JsonCreator
@@ -29,10 +28,10 @@ internal class Eip712Data {
     ) {
 
         override fun toString(): String {
-            return ("EIP712Message{"
-                    + "primaryType='" + this.primaryType + '\''.toString()
-                    + ", message='" + this.message + '\''.toString()
-                    + '}'.toString())
+            return ("EIP712Message{" +
+                    "primaryType='" + this.primaryType + '\''.toString() +
+                    ", message='" + this.message + '\''.toString() +
+                    '}'.toString())
         }
     }
 }

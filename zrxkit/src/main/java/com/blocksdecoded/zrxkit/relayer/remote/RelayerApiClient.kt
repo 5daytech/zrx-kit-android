@@ -75,8 +75,8 @@ class RelayerApiClient(relayerConfig: RelayerConfig) {
 
         @GET
         fun getFeeRecipients(
-                @Url url: String,
-                @Query("networkId") int: Int
+            @Url url: String,
+            @Query("networkId") int: Int
         ): Single<FeeRecipientsResponse>
 
         @POST
