@@ -35,5 +35,7 @@ interface IZrxExchange {
 
     fun cancelOrder(order: SignedOrder): Flowable<String>
 
+    fun batchCancelOrders(order: List<SignedOrder>): Flowable<String>
+
     fun ordersInfo(orders: List<SignedOrder>): Flowable<List<OrderInfo>>
 }

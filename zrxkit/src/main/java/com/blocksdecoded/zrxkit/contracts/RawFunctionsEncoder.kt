@@ -1,6 +1,6 @@
 package com.blocksdecoded.zrxkit.contracts
 
-import com.blocksdecoded.zrxkit.contracts.StructFunctionEncoder.ExchangeFunction.*
+import com.blocksdecoded.zrxkit.contracts.RawFunctionsEncoder.ExchangeFunction.*
 import com.blocksdecoded.zrxkit.model.OrderInfo
 import com.blocksdecoded.zrxkit.model.SignedOrder
 import com.blocksdecoded.zrxkit.utils.clearPrefix
@@ -16,7 +16,7 @@ import org.web3j.crypto.RawTransaction
 import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.utils.Numeric
 
-internal class StructFunctionEncoder(
+internal class RawFunctionsEncoder(
     private val gasProvider: ContractGasProvider
 ) {
 
@@ -113,6 +113,17 @@ internal class StructFunctionEncoder(
             )
         )
 
+    fun getBatchCancelOrdersTransaction(nonce: BigInteger, orders: List<SignedOrder>): RawTransaction =
+        getRawTransaction(
+            BATCH_CANCEL_ORDERS,
+            nonce,
+            orders.first().exchangeAddress,
+            encodeFunction(
+                BATCH_CANCEL_ORDERS,
+                orders
+            )
+        )
+
     fun getFillOrderTransaction(nonce: BigInteger, order: SignedOrder, fillAmount: BigInteger): RawTransaction {
         val data = encodeFunction(
             FILL_ORDER,
@@ -178,6 +189,8 @@ internal class StructFunctionEncoder(
         private val outputs: String = ""
     ) {
         CANCEL_ORDER("cancelOrder($ORDER_SIGNATURE)"),
+
+        BATCH_CANCEL_ORDERS("batchCancelOrders($ORDER_SIGNATURE[])"),
 
         ORDERS_INFO(
             "getOrdersInfo($ORDER_SIGNATURE[])",

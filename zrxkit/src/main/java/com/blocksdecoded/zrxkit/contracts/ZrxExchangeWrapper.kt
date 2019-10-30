@@ -22,7 +22,7 @@ internal class ZrxExchangeWrapper(
 ) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider),
     IZrxExchange {
 
-    private val functionEncoder = StructFunctionEncoder(gasProvider)
+    private val functionEncoder = RawFunctionsEncoder(gasProvider)
 
     //region Private
 
@@ -90,14 +90,6 @@ internal class ZrxExchangeWrapper(
         }
     }
 
-    override fun cancelOrder(order: SignedOrder): Flowable<String> {
-        return getNonce().flatMap {
-            val transaction = functionEncoder.getCancelOrderTransaction(it, order)
-
-            sendTransaction<String>(transaction)
-        }
-    }
-
     override fun ordersInfo(orders: List<SignedOrder>): Flowable<List<OrderInfo>> {
         val transaction = Transaction.createEthCallTransaction(
             credentials.address,
@@ -108,6 +100,22 @@ internal class ZrxExchangeWrapper(
         return web3j.ethCall(transaction, defaultBlockParameter)
             .flowable()
             .map { functionEncoder.decodeOrdersInfo(it.value) }
+    }
+
+    override fun cancelOrder(order: SignedOrder): Flowable<String> {
+        return getNonce().flatMap {
+            val transaction = functionEncoder.getCancelOrderTransaction(it, order)
+
+            sendTransaction<String>(transaction)
+        }
+    }
+
+    override fun batchCancelOrders(order: List<SignedOrder>): Flowable<String> {
+        return getNonce().flatMap {
+            val transaction = functionEncoder.getBatchCancelOrdersTransaction(it, order)
+
+            sendTransaction<String>(transaction)
+        }
     }
 
     //endregion
