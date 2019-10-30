@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.blocksdecoded.zrxkit.ZrxKit
-import com.blocksdecoded.zrxkit.contracts.WethWrapper
-import com.blocksdecoded.zrxkit.contracts.ZrxExchangeWrapper
+import com.blocksdecoded.zrxkit.contracts.IWethWrapper
+import com.blocksdecoded.zrxkit.contracts.IZrxExchange
 import com.blocksdecoded.zrxkit.model.AssetItem
 import com.blocksdecoded.zrxkit.model.Order
 import com.blocksdecoded.zrxkit.model.SignedOrder
@@ -56,13 +56,13 @@ class MainViewModel: ViewModel() {
     private val assetPair: Pair<AssetItem, AssetItem>
         get() = zrxKit.relayerManager.availableRelayers.first().availablePairs[0]
 
-    private lateinit var wethContract: WethWrapper
+    private lateinit var wethContract: IWethWrapper
     private lateinit var ethereumKit: EthereumKit
     private lateinit var ethereumAdapter: EthereumAdapter
     private lateinit var wethAdapter: Erc20Adapter
     private lateinit var tokenAdapter: Erc20Adapter
     private lateinit var zrxKit: ZrxKit
-    private lateinit var zrxExchangeContract: ZrxExchangeWrapper
+    private lateinit var zrxExchangeContract: IZrxExchange
 
     private val disposables = CompositeDisposable()
 

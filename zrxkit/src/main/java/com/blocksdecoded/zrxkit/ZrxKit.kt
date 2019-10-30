@@ -1,8 +1,6 @@
 package com.blocksdecoded.zrxkit
 
-import com.blocksdecoded.zrxkit.contracts.Erc20ProxyWrapper
-import com.blocksdecoded.zrxkit.contracts.WethWrapper
-import com.blocksdecoded.zrxkit.contracts.ZrxExchangeWrapper
+import com.blocksdecoded.zrxkit.contracts.*
 import com.blocksdecoded.zrxkit.model.AssetItem
 import com.blocksdecoded.zrxkit.model.EAssetProxyId
 import com.blocksdecoded.zrxkit.model.Order
@@ -10,7 +8,8 @@ import com.blocksdecoded.zrxkit.model.SignedOrder
 import com.blocksdecoded.zrxkit.relayer.IRelayerManager
 import com.blocksdecoded.zrxkit.relayer.RelayerManager
 import com.blocksdecoded.zrxkit.relayer.model.Relayer
-import com.blocksdecoded.zrxkit.utils.SignUtils
+import com.blocksdecoded.zrxkit.sign.SignUtils
+import com.blocksdecoded.zrxkit.utils.toEther
 import io.reactivex.Flowable
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.ECKeyPair
@@ -26,13 +25,13 @@ class ZrxKit private constructor(
     private val gasInfoProvider: ContractGasProvider
 ) {
 
-    fun getWethWrapperInstance(wrapperAddress: String = networkType.wethAddress): WethWrapper =
+    fun getWethWrapperInstance(wrapperAddress: String = networkType.wethAddress): IWethWrapper =
         WethWrapper(wrapperAddress, credentials, gasInfoProvider, providerUrl)
 
-    fun getExchangeInstance(address: String = networkType.exchangeAddress): ZrxExchangeWrapper =
+    fun getExchangeInstance(address: String = networkType.exchangeAddress): IZrxExchange =
         ZrxExchangeWrapper(address, credentials, gasInfoProvider, providerUrl)
 
-    fun getErc20ProxyInstance(tokenAddress: String, proxyAddress: String = networkType.erc20ProxyAddress): Erc20ProxyWrapper =
+    fun getErc20ProxyInstance(tokenAddress: String, proxyAddress: String = networkType.erc20ProxyAddress): IErc20Proxy =
         Erc20ProxyWrapper(tokenAddress, credentials, gasInfoProvider, providerUrl, proxyAddress)
 
     fun signOrder(order: Order): SignedOrder? = SignUtils().ecSignOrder(order, credentials)

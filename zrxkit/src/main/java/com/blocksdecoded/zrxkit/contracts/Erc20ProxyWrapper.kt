@@ -1,6 +1,6 @@
 package com.blocksdecoded.zrxkit.contracts
 
-import com.blocksdecoded.zrxkit.Constants.MAX_ALLOWANCE
+import com.blocksdecoded.zrxkit.utils.Constants.MAX_ALLOWANCE
 import io.reactivex.Flowable
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Address
@@ -15,19 +15,20 @@ import org.web3j.tx.Contract
 import org.web3j.tx.gas.ContractGasProvider
 import java.math.BigInteger
 
-class Erc20ProxyWrapper(
+internal class Erc20ProxyWrapper(
     contractAddress: String,
     credentials: Credentials,
     contractGasProvider: ContractGasProvider,
     providerUrl: String,
     private var proxyAddress: String
-) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider) {
+) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider),
+    IErc20Proxy {
 
-    fun lockProxy(): Flowable<TransactionReceipt> = approve(proxyAddress, BigInteger.valueOf(0))
+    override fun lockProxy(): Flowable<TransactionReceipt> = approve(proxyAddress, BigInteger.valueOf(0))
 
-    fun setUnlimitedProxyAllowance(): Flowable<TransactionReceipt> = approve(proxyAddress, MAX_ALLOWANCE)
+    override fun setUnlimitedProxyAllowance(): Flowable<TransactionReceipt> = approve(proxyAddress, MAX_ALLOWANCE)
 
-    fun proxyAllowance(ownerAddress: String): Flowable<BigInteger> = allowance(ownerAddress, proxyAddress)
+    override fun proxyAllowance(ownerAddress: String): Flowable<BigInteger> = allowance(ownerAddress, proxyAddress)
 
     private fun allowance(ownerAddress: String, spenderAddress: String): Flowable<BigInteger> {
         val function = Function(

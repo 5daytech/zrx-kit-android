@@ -1,4 +1,4 @@
-package com.blocksdecoded.zrxkit
+package com.blocksdecoded.zrxkit.utils
 
 import java.math.BigInteger
 

@@ -1,6 +1,6 @@
-package com.blocksdecoded.zrxkit
+package com.blocksdecoded.zrxkit.utils
 
-import com.blocksdecoded.zrxkit.Constants.ETH_DECIMALS
+import com.blocksdecoded.zrxkit.utils.Constants.ETH_DECIMALS
 import org.bouncycastle.util.encoders.Hex
 import java.math.BigDecimal
 import java.math.BigInteger

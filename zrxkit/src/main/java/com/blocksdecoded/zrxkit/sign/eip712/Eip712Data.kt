@@ -1,4 +1,4 @@
-package com.blocksdecoded.zrxkit.utils.eip712
+package com.blocksdecoded.zrxkit.sign.eip712
 
 import java.util.HashMap
 

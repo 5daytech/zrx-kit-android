@@ -1,15 +1,16 @@
-package com.blocksdecoded.zrxkit.utils
+package com.blocksdecoded.zrxkit.sign
 
-import com.blocksdecoded.zrxkit.*
-import com.blocksdecoded.zrxkit.hexStringToByteArray
-import com.blocksdecoded.zrxkit.utils.eip712.Eip712Data
-import com.blocksdecoded.zrxkit.utils.eip712.Eip712Encoder
+import com.blocksdecoded.zrxkit.InvalidSignatureException
+import com.blocksdecoded.zrxkit.UnsupportedSignatureType
+import com.blocksdecoded.zrxkit.sign.eip712.Eip712Data
+import com.blocksdecoded.zrxkit.sign.eip712.Eip712Encoder
 import com.blocksdecoded.zrxkit.model.ESignatureType
 import com.blocksdecoded.zrxkit.model.ESignatureType.*
 import com.blocksdecoded.zrxkit.model.IOrder
 import com.blocksdecoded.zrxkit.model.Order
 import com.blocksdecoded.zrxkit.model.SignedOrder
-import com.blocksdecoded.zrxkit.toHexString
+import com.blocksdecoded.zrxkit.utils.*
+import com.blocksdecoded.zrxkit.utils.toHexString
 import com.fasterxml.jackson.core.util.ByteArrayBuilder
 import org.bouncycastle.util.encoders.Hex
 import org.web3j.crypto.*

@@ -14,12 +14,13 @@ import org.web3j.tx.gas.ContractGasProvider
 import org.web3j.utils.Numeric
 import java.math.BigInteger
 
-class ZrxExchangeWrapper(
+internal class ZrxExchangeWrapper(
     contractAddress: String,
-    var credentials: Credentials,
+    private var credentials: Credentials,
     contractGasProvider: ContractGasProvider,
     providerUrl: String
-) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider) {
+) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider),
+    IZrxExchange {
 
     private val functionEncoder = StructFunctionEncoder(gasProvider)
 
@@ -53,7 +54,7 @@ class ZrxExchangeWrapper(
 
     //region Public
 
-    fun marketBuyOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String> {
+    override fun marketBuyOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String> {
         return getNonce().flatMap {
             val transaction = functionEncoder.getMarketBuyOrdersTransaction(
                 it,
@@ -65,7 +66,19 @@ class ZrxExchangeWrapper(
         }
     }
 
-    fun fillOrder(order: SignedOrder, fillAmount: BigInteger): Flowable<String> {
+    override fun marketSellOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String> {
+        return getNonce().flatMap {
+            val transaction = functionEncoder.getMarketSellOrdersTransaction(
+                it,
+                orders,
+                fillAmount
+            )
+
+            sendTransaction<String>(transaction)
+        }
+    }
+
+    override fun fillOrder(order: SignedOrder, fillAmount: BigInteger): Flowable<String> {
         return getNonce().flatMap {
             val transaction = functionEncoder.getFillOrderTransaction(
                 it,
@@ -77,7 +90,7 @@ class ZrxExchangeWrapper(
         }
     }
 
-    fun cancelOrder(order: SignedOrder): Flowable<String> {
+    override fun cancelOrder(order: SignedOrder): Flowable<String> {
         return getNonce().flatMap {
             val transaction = functionEncoder.getCancelOrderTransaction(it, order)
 
@@ -85,7 +98,7 @@ class ZrxExchangeWrapper(
         }
     }
 
-    fun ordersInfo(orders: List<SignedOrder>): Flowable<List<OrderInfo>> {
+    override fun ordersInfo(orders: List<SignedOrder>): Flowable<List<OrderInfo>> {
         val transaction = Transaction.createEthCallTransaction(
             credentials.address,
             contractAddress,
@@ -95,18 +108,6 @@ class ZrxExchangeWrapper(
         return web3j.ethCall(transaction, defaultBlockParameter)
             .flowable()
             .map { functionEncoder.decodeOrdersInfo(it.value) }
-    }
-
-    fun marketSellOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String> {
-        return getNonce().flatMap {
-            val transaction = functionEncoder.getMarketSellOrdersTransaction(
-                it,
-                orders,
-                fillAmount
-            )
-
-            sendTransaction<String>(transaction)
-        }
     }
 
     //endregion

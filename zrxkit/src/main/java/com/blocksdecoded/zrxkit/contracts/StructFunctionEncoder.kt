@@ -1,12 +1,12 @@
 package com.blocksdecoded.zrxkit.contracts
 
-import com.blocksdecoded.zrxkit.clearPrefix
+import com.blocksdecoded.zrxkit.utils.clearPrefix
 import com.blocksdecoded.zrxkit.contracts.StructFunctionEncoder.ExchangeFunction.*
-import com.blocksdecoded.zrxkit.decodePrefixedHex
-import com.blocksdecoded.zrxkit.hexStringToByteArray
+import com.blocksdecoded.zrxkit.utils.decodePrefixedHex
+import com.blocksdecoded.zrxkit.utils.hexStringToByteArray
 import com.blocksdecoded.zrxkit.model.OrderInfo
 import com.blocksdecoded.zrxkit.model.SignedOrder
-import com.blocksdecoded.zrxkit.prefixed
+import com.blocksdecoded.zrxkit.utils.prefixed
 import com.esaulpaugh.headlong.abi.Function
 import com.esaulpaugh.headlong.abi.Tuple
 import org.bouncycastle.util.encoders.Hex

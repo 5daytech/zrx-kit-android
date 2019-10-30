@@ -1,10 +1,12 @@
 package com.blocksdecoded.zrxkit.utils.eip712
 
-import com.blocksdecoded.zrxkit.toHexString
+import com.blocksdecoded.zrxkit.utils.toHexString
 import com.blocksdecoded.zrxkit.model.ESignatureType
 import com.blocksdecoded.zrxkit.model.Order
 import com.blocksdecoded.zrxkit.model.SignedOrder
-import com.blocksdecoded.zrxkit.utils.SignUtils
+import com.blocksdecoded.zrxkit.sign.SignUtils
+import com.blocksdecoded.zrxkit.sign.eip712.Eip712Data
+import com.blocksdecoded.zrxkit.sign.eip712.Eip712Encoder
 import org.junit.Assert.*
 import org.junit.Test
 import org.web3j.crypto.*
