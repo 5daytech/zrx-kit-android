@@ -21,6 +21,8 @@ internal class ZrxExchangeWrapper(
     providerUrl: String
 ) : Contract(BINARY, contractAddress, Web3j.build(HttpService(providerUrl)), credentials, contractGasProvider),
     IZrxExchange {
+    override val address: String
+        get() = contractAddress
 
     private val functionEncoder = RawFunctionsEncoder(gasProvider)
 

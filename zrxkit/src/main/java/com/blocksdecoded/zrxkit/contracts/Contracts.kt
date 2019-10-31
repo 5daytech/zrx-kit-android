@@ -27,6 +27,8 @@ interface IWethWrapper {
 }
 
 interface IZrxExchange {
+    val address: String
+
     fun marketBuyOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String>
 
     fun marketSellOrders(orders: List<SignedOrder>, fillAmount: BigInteger): Flowable<String>
