@@ -120,7 +120,7 @@ internal class RawFunctionsEncoder(
             orders.first().exchangeAddress,
             encodeFunction(
                 BATCH_CANCEL_ORDERS,
-                orders
+                listOf(orders)
             )
         )
 
