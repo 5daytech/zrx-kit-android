@@ -16,5 +16,5 @@ data class OrderRecord(
 
 data class OrderMetaData(
     val orderHash: String?,
-    val remainingFillableTakerAssetAmount: String
+    val remainingFillableTakerAssetAmount: String?
 )
