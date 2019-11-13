@@ -1,6 +1,6 @@
-[![CircleCI](https://circleci.com/gh/blocksdecoded/zrx-kit-android/tree/master.svg?style=shield)](https://circleci.com/gh/blocksdecoded/zrx-kit-android/tree/master)
-[![Jitpack](https://jitpack.io/v/blocksdecoded/zrx-kit-android.svg)](https://jitpack.io/#blocksdecoded/zrx-kit-android)
-[![API: 23+](https://img.shields.io/badge/API-23+-brightgreen.svg)](https://opensource.org/licenses/MIT)
+[![CircleCI](https://circleci.com/gh/5daytech/zrx-kit-android/tree/master.svg?style=shield)](https://circleci.com/gh/blocksdecoded/zrx-kit-android/tree/master)
+[![Jitpack](https://jitpack.io/v/5daytech/zrx-kit-android.svg)](https://jitpack.io/#5daytech/zrx-kit-android)
+[![API: 23+](https://img.shields.io/badge/API-23+-brightgreen.svg)](https://developer.android.com/studio/releases/platforms)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 # ZrxKit 
 0x Exchange protocol implementation in Kotlin.
