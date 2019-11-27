@@ -36,6 +36,12 @@ class ZrxKit private constructor(
 
     fun signOrder(order: Order): SignedOrder? = SignUtils().ecSignOrder(order, credentials)
 
+    fun protocolFeeInEth(fillOrdersCount: Int): BigDecimal = protocolFee(fillOrdersCount).toEther()
+
+    fun protocolFee(fillOrdersCount: Int): BigInteger {
+        return (BigInteger.valueOf((150000L * fillOrdersCount)) * gasInfoProvider.getGasPrice(""))
+    }
+
     val marketBuyEstimatedPrice: Flowable<BigDecimal>
         get() {
             val price = gasInfoProvider.getGasLimit("marketBuyOrders") *
