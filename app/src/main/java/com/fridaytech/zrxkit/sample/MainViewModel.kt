@@ -39,7 +39,7 @@ class MainViewModel: ViewModel() {
     private val networkType: EthereumKit.NetworkType = EthereumKit.NetworkType.Ropsten
     private val zrxKitNetworkType: ZrxKit.NetworkType = ZrxKit.NetworkType.Ropsten
 
-    private val feeRecipient = "0x2e8da0868e46fc943766a98b8d92a0380b29ce2a"
+    private val feeRecipient = "0xA5004C8b2D64AD08A80d33Ad000820d63aa2cCC9".toLowerCase(Locale.US)
 
     private val wethAddress = "0xc778417e063141139fce010982780140aa0cd5ab"
     private val tokenAddress = "0x30845a385581ce1dc51d651ff74689d7f4415146"
