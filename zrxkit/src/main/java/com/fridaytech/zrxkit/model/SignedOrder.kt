@@ -12,7 +12,9 @@ data class SignedOrder(
     override val senderAddress: String,
     override val feeRecipientAddress: String,
     override val makerFee: String,
+    override val makerFeeAssetData: String,
     override val takerFee: String,
+    override val takerFeeAssetData: String,
     override val salt: String,
     val signature: String
 ) : IOrder {
@@ -31,7 +33,9 @@ data class SignedOrder(
                 order.senderAddress,
                 order.feeRecipientAddress,
                 order.makerFee,
+                order.makerFeeAssetData,
                 order.takerFee,
+                order.takerFeeAssetData,
                 order.salt,
                 signature
             )

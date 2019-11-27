@@ -12,6 +12,8 @@ data class Order(
     override val senderAddress: String,
     override val feeRecipientAddress: String,
     override val makerFee: String,
+    override val makerFeeAssetData: String,
     override val takerFee: String,
+    override val takerFeeAssetData: String,
     override val salt: String
 ) : IOrder

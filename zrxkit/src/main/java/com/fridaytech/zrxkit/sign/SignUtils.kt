@@ -46,12 +46,14 @@ class SignUtils {
             Eip712Data.Entry("expirationTimeSeconds", "uint256"),
             Eip712Data.Entry("salt", "uint256"),
             Eip712Data.Entry("makerAssetData", "bytes"),
-            Eip712Data.Entry("takerAssetData", "bytes")
+            Eip712Data.Entry("takerAssetData", "bytes"),
+            Eip712Data.Entry("makerFeeAssetData", "bytes"),
+            Eip712Data.Entry("takerFeeAssetData", "bytes")
         ))
     }
 
     private fun getDomain(order: IOrder): Eip712Data.EIP712Domain =
-        Eip712Data.EIP712Domain("0x Protocol", "2", 0, order.exchangeAddress)
+        Eip712Data.EIP712Domain("0x Protocol", "3", 0, order.exchangeAddress)
 
     private fun orderToMap(order: IOrder): HashMap<String, Any> {
         val result = hashMapOf<String, Any>()
@@ -68,6 +70,8 @@ class SignUtils {
         result["salt"] = order.salt.toBigInteger()
         result["makerAssetData"] = order.makerAssetData.clearPrefix().hexStringToByteArray()
         result["takerAssetData"] = order.takerAssetData.clearPrefix().hexStringToByteArray()
+        result["makerFeeAssetData"] = order.makerFeeAssetData.clearPrefix().hexStringToByteArray()
+        result["takerFeeAssetData"] = order.takerFeeAssetData.clearPrefix().hexStringToByteArray()
 
         return result
     }

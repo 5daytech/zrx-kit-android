@@ -12,6 +12,8 @@ interface IOrder {
     val senderAddress: String
     val feeRecipientAddress: String
     val makerFee: String
+    val makerFeeAssetData: String
     val takerFee: String
+    val takerFeeAssetData: String
     val salt: String
 }

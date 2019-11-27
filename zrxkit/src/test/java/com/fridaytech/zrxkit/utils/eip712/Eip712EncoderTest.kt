@@ -125,7 +125,9 @@ class Eip712EncoderTest {
             senderAddress = "0x0000000000000000000000000000000000000000",
             takerAddress = "0x0000000000000000000000000000000000000000",
             makerFee = "0",
+            makerFeeAssetData = "0xf47261b00000000000000000000000002002d3812f58e35f0ea1ffbf80a75a38c32175fa",
             takerFee = "0",
+            takerFeeAssetData = "0xf47261b0000000000000000000000000d0a1e359811322d97991e03f863a0c30c2cf029c",
             feeRecipientAddress = "0xa258b39954cef5cb142fd567a46cddb31a670124",
             salt = "1561542388954"
         )
@@ -150,7 +152,9 @@ class Eip712EncoderTest {
             senderAddress = "0x0000000000000000000000000000000000000000",
             feeRecipientAddress = "0xa258b39954cef5cb142fd567a46cddb31a670124",
             makerFee = "0",
+            makerFeeAssetData = "0xf47261b0000000000000000000000000d0a1e359811322d97991e03f863a0c30c2cf029c",
             takerFee = "0",
+            takerFeeAssetData = "0xf47261b00000000000000000000000002002d3812f58e35f0ea1ffbf80a75a38c32175fa",
             salt = "1561545552952",
             signature = "0x1cec7bc3eb323169417bc33eeaea77a3b8bd79a52f284de4531d352c9b9e00e92464c6dffb04b2595a65030cb7f3869da65bfcd4293303c261d4a4c577c0c9b90003"
         )

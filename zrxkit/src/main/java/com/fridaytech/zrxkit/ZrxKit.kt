@@ -96,7 +96,7 @@ class ZrxKit private constructor(
         ),
         Ropsten(
             3,
-            "0xbff9493f92a3df4b0429b6d00743b3cfb4c85831",
+            "0x725bc2f8c85ed0289d3da79cde3125d33fc1d7e6",
             "0xb1408f4c245a23c31b98d2c626777d4c0d766caa",
             "0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4",
             "0xc778417e063141139fce010982780140aa0cd5ab",
@@ -104,7 +104,7 @@ class ZrxKit private constructor(
         ),
         Kovan(
             42,
-            "0x30589010550762d2f0d06f650d8e8b6ade6dbf4b",
+            "0x617602cd3f734cf1e028c96b3f54c0489bed8022",
             "0xf1ec01d6236d3cd881a0bf0130ea25fe4234003e",
             "0x2a9127c745688a165106c11cd4d647d2220af821",
             "0xd0a1e359811322d97991e03f863a0c30c2cf029c",

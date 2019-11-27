@@ -89,7 +89,7 @@ class MainViewModel: ViewModel() {
             listOf(ZrxKit.assetItemForAddress(tokenAddress) to ZrxKit.assetItemForAddress(wethAddress)),
             listOf(feeRecipient),
             zrxKitNetworkType.exchangeAddress,
-            RelayerConfig("https://relayer.ropsten.fridayte.ch", "", "v2")
+            RelayerConfig("https://relayer.ropsten.fridayte.ch", "", "v3")
         )
     )
 
@@ -405,7 +405,9 @@ class MainViewModel: ViewModel() {
             senderAddress = "0x0000000000000000000000000000000000000000",
             takerAddress = "0x0000000000000000000000000000000000000000",
             makerFee = "0",
+            makerFeeAssetData = makerAsset,
             takerFee = "0",
+            takerFeeAssetData = takerAsset,
             feeRecipientAddress = feeRecipient,
             salt = Date().time.toString()
         )
