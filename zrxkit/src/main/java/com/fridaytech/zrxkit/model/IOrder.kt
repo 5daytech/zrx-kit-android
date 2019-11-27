@@ -1,6 +1,7 @@
 package com.fridaytech.zrxkit.model
 
 interface IOrder {
+    val chainId: Int
     val exchangeAddress: String
     val makerAssetData: String
     val takerAssetData: String

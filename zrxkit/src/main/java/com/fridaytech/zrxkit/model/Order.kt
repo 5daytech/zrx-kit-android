@@ -1,6 +1,7 @@
 package com.fridaytech.zrxkit.model
 
 data class Order(
+    override val chainId: Int,
     override val exchangeAddress: String,
     override val makerAssetData: String,
     override val takerAssetData: String,

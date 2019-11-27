@@ -31,6 +31,7 @@ class SignUtils {
         put("EIP712Domain", listOf(
             Eip712Data.Entry("name", "string"),
             Eip712Data.Entry("version", "string"),
+            Eip712Data.Entry("chainId", "uint256"),
             Eip712Data.Entry("verifyingContract", "address")
         ))
 
@@ -53,7 +54,7 @@ class SignUtils {
     }
 
     private fun getDomain(order: IOrder): Eip712Data.EIP712Domain =
-        Eip712Data.EIP712Domain("0x Protocol", "3", 0, order.exchangeAddress)
+        Eip712Data.EIP712Domain("0x Protocol", "3.0.0", order.chainId.toLong(), order.exchangeAddress)
 
     private fun orderToMap(order: IOrder): HashMap<String, Any> {
         val result = hashMapOf<String, Any>()

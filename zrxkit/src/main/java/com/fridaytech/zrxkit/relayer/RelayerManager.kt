@@ -17,13 +17,13 @@ class RelayerManager(
     private val relayerClients = availableRelayers.map { RelayerApiClient(it.config) }
 
     override fun getAssetPairs(relayerId: Int): Flowable<List<AssetPair>> =
-        relayerClients[relayerId].getAssets(networkId = networkType.id)
+        relayerClients[relayerId].getAssets()
 
     override fun getOrderbook(relayerId: Int, base: String, quote: String, limit: Int): Flowable<OrderBookResponse> =
-        relayerClients[relayerId].getOrderbook(base, quote, limit, networkId = networkType.id)
+        relayerClients[relayerId].getOrderbook(base, quote, limit)
 
     override fun postOrder(relayerId: Int, order: SignedOrder): Flowable<Unit> =
-        relayerClients[relayerId].postOrder(order, networkId = networkType.id)
+        relayerClients[relayerId].postOrder(order)
 
     override fun getOrders(
         relayerId: Int,
@@ -31,7 +31,6 @@ class RelayerManager(
         limit: Int
     ): Flowable<OrderBook> = relayerClients[relayerId].getOrders(
         makerAddress?.toLowerCase(Locale.US),
-        limit,
-        networkId = networkType.id
+        limit
     )
 }

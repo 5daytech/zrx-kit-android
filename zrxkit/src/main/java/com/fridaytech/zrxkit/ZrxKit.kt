@@ -9,6 +9,7 @@ import com.fridaytech.zrxkit.relayer.IRelayerManager
 import com.fridaytech.zrxkit.relayer.RelayerManager
 import com.fridaytech.zrxkit.relayer.model.Relayer
 import com.fridaytech.zrxkit.sign.SignUtils
+import com.fridaytech.zrxkit.utils.CoreUtils
 import com.fridaytech.zrxkit.utils.toEther
 import io.reactivex.Flowable
 import java.math.BigDecimal
@@ -38,9 +39,8 @@ class ZrxKit private constructor(
 
     fun protocolFeeInEth(fillOrdersCount: Int): BigDecimal = protocolFee(fillOrdersCount).toEther()
 
-    fun protocolFee(fillOrdersCount: Int): BigInteger {
-        return (BigInteger.valueOf((150000L * fillOrdersCount)) * gasInfoProvider.getGasPrice(""))
-    }
+    fun protocolFee(fillOrdersCount: Int): BigInteger =
+        CoreUtils.getProtocolFee(gasInfoProvider, fillOrdersCount)
 
     val marketBuyEstimatedPrice: Flowable<BigDecimal>
         get() {
@@ -96,7 +96,7 @@ class ZrxKit private constructor(
         ),
         Ropsten(
             3,
-            "0x725bc2f8c85ed0289d3da79cde3125d33fc1d7e6",
+            "0xfb2dd2a1366de37f7241c83d47da58fd503e2c64",
             "0xb1408f4c245a23c31b98d2c626777d4c0d766caa",
             "0xe654aac058bfbf9f83fcaee7793311dd82f6ddb4",
             "0xc778417e063141139fce010982780140aa0cd5ab",
@@ -104,7 +104,7 @@ class ZrxKit private constructor(
         ),
         Kovan(
             42,
-            "0x617602cd3f734cf1e028c96b3f54c0489bed8022",
+            "0x4eacd0af335451709e1e7b570b8ea68edec8bc97",
             "0xf1ec01d6236d3cd881a0bf0130ea25fe4234003e",
             "0x2a9127c745688a165106c11cd4d647d2220af821",
             "0xd0a1e359811322d97991e03f863a0c30c2cf029c",

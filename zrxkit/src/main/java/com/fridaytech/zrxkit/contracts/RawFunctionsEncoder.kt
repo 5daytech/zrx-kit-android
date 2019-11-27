@@ -5,6 +5,7 @@ import com.esaulpaugh.headlong.abi.Tuple
 import com.fridaytech.zrxkit.contracts.RawFunctionsEncoder.ExchangeFunction.*
 import com.fridaytech.zrxkit.model.OrderInfo
 import com.fridaytech.zrxkit.model.SignedOrder
+import com.fridaytech.zrxkit.utils.*
 import com.fridaytech.zrxkit.utils.clearPrefix
 import com.fridaytech.zrxkit.utils.decodePrefixedHex
 import com.fridaytech.zrxkit.utils.hexStringToByteArray
@@ -34,7 +35,9 @@ internal class RawFunctionsEncoder(
         order.expirationTimeSeconds.toBigInteger(),
         order.salt.toBigInteger(),
         order.makerAssetData.clearPrefix().hexStringToByteArray(),
-        order.takerAssetData.clearPrefix().hexStringToByteArray()
+        order.takerAssetData.clearPrefix().hexStringToByteArray(),
+        order.makerFeeAssetData.clearPrefix().hexStringToByteArray(),
+        order.takerFeeAssetData.clearPrefix().hexStringToByteArray()
     )
 
     private fun encodeData(args: List<Any>): Tuple {
@@ -75,14 +78,31 @@ internal class RawFunctionsEncoder(
             Numeric.toHexString(buffer.array())
     }
 
-    private fun getRawTransaction(function: ExchangeFunction, nonce: BigInteger, to: String, data: String): RawTransaction =
-        RawTransaction.createTransaction(
-            nonce,
-            gasProvider.getGasPrice(function.functionName),
-            gasProvider.getGasLimit(function.functionName),
-            to,
-            data
-        )
+    private fun getRawTransaction(
+        function: ExchangeFunction,
+        nonce: BigInteger,
+        to: String,
+        data: String,
+        amount: BigInteger? = null
+    ): RawTransaction =
+        if (amount != null) {
+            RawTransaction.createTransaction(
+                nonce,
+                gasProvider.getGasPrice(function.functionName),
+                gasProvider.getGasLimit(function.functionName),
+                to,
+                amount,
+                data
+            )
+        } else {
+            RawTransaction.createTransaction(
+                nonce,
+                gasProvider.getGasPrice(function.functionName),
+                gasProvider.getGasLimit(function.functionName),
+                to,
+                data
+            )
+        }
 
     //endregion
 
@@ -98,7 +118,8 @@ internal class RawFunctionsEncoder(
             MARKET_BUY_ORDERS,
             nonce,
             orders.first().exchangeAddress,
-            data
+            data,
+            CoreUtils.getProtocolFee(gasProvider, orders.size)
         )
     }
 
@@ -134,7 +155,8 @@ internal class RawFunctionsEncoder(
             FILL_ORDER,
             nonce,
             order.exchangeAddress,
-            data
+            data,
+            CoreUtils.getProtocolFee(gasProvider, 1)
         )
     }
 
@@ -148,7 +170,8 @@ internal class RawFunctionsEncoder(
             MARKET_SELL_ORDERS,
             nonce,
             orders.first().exchangeAddress,
-            data
+            data,
+            CoreUtils.getProtocolFee(gasProvider, orders.size)
         )
     }
 
@@ -180,7 +203,7 @@ internal class RawFunctionsEncoder(
     //endregion
 
     companion object {
-        internal const val ORDER_SIGNATURE: String = "(address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes,bytes)"
+        internal const val ORDER_SIGNATURE: String = "(address,address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,bytes,bytes,bytes,bytes)"
         internal const val ORDER_INFO_SIGNATURE: String = "(uint256,bytes32,uint256)"
     }
 
@@ -197,9 +220,9 @@ internal class RawFunctionsEncoder(
             "($ORDER_INFO_SIGNATURE[])"
         ),
 
-        MARKET_SELL_ORDERS("marketSellOrders($ORDER_SIGNATURE[],uint256,bytes[])"),
+        MARKET_SELL_ORDERS("marketSellOrdersNoThrow($ORDER_SIGNATURE[],uint256,bytes[])"),
 
-        MARKET_BUY_ORDERS("marketBuyOrders($ORDER_SIGNATURE[],uint256,bytes[])"),
+        MARKET_BUY_ORDERS("marketBuyOrdersNoThrow($ORDER_SIGNATURE[],uint256,bytes[])"),
 
         FILL_ORDER("fillOrder($ORDER_SIGNATURE,uint256,bytes)");
 

@@ -389,6 +389,7 @@ class MainViewModel: ViewModel() {
         }
 
         val order = Order(
+            chainId = zrxKitNetworkType.id,
             makerAddress = receiveAddress.toLowerCase(),
             exchangeAddress = zrxKitNetworkType.exchangeAddress,
             makerAssetData = makerAsset,
@@ -425,7 +426,7 @@ class MainViewModel: ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                 }, {
-                    Log.d(TAG, "Order create error $it")
+                    Log.d(TAG, "Order create error ${it}")
                     alertEvent.postValue("Order create error ${it.message}")
                 }, {
                     alertEvent.postValue("Order created")

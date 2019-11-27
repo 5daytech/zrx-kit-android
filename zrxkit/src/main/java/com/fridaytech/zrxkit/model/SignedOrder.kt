@@ -1,6 +1,7 @@
 package com.fridaytech.zrxkit.model
 
 data class SignedOrder(
+    override val chainId: Int,
     override val exchangeAddress: String,
     override val makerAssetData: String,
     override val takerAssetData: String,
@@ -22,6 +23,7 @@ data class SignedOrder(
     companion object {
         fun fromOrder(order: IOrder, signature: String): SignedOrder =
             SignedOrder(
+                order.chainId,
                 order.exchangeAddress,
                 order.makerAssetData,
                 order.takerAssetData,
