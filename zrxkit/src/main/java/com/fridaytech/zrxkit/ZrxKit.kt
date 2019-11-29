@@ -64,7 +64,7 @@ class ZrxKit private constructor(
             networkType: NetworkType = NetworkType.Ropsten,
             gasPriceProvider: GasInfoProvider = defaultGasProvider
         ): ZrxKit {
-            val relayerManager = RelayerManager(relayers, networkType)
+            val relayerManager = RelayerManager(relayers)
             val credentials = Credentials.create(ECKeyPair.create(privateKey))
 
             return ZrxKit(relayerManager, credentials, networkType.getInfuraUrl(infuraKey), networkType, gasPriceProvider)
