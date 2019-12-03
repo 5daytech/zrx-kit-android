@@ -89,7 +89,7 @@ class MainViewModel: ViewModel() {
             listOf(ZrxKit.assetItemForAddress(tokenAddress) to ZrxKit.assetItemForAddress(wethAddress)),
             listOf(feeRecipient),
             zrxKitNetworkType.exchangeAddress,
-            RelayerConfig("https://relayer.ropsten.fridayte.ch", "", "v3")
+            RelayerConfig("https://ropsten.api.udex.app", "sra/", "v3")
         )
     )
 
