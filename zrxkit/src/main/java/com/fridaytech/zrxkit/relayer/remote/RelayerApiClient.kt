@@ -37,7 +37,7 @@ class RelayerApiClient(relayerConfig: RelayerConfig) {
         client = retrofit.create(RelayerNetworkClient::class.java)
     }
 
-    private val prefix = "${relayerConfig.suffix}${relayerConfig.version}"
+    private val prefix = if (relayerConfig.suffix.isEmpty()) "" else (relayerConfig.suffix + "/") + relayerConfig.version
 
     fun feeRecipients(): Flowable<List<String>> =
         client.getFeeRecipients("$prefix/fee_recipients")
