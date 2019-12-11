@@ -69,10 +69,10 @@ internal class RawFunctionsEncoder(
         return Tuple(*items.toTypedArray())
     }
 
-    private fun encodeFunction(type: ExchangeFunction, data: List<Any>, prefixed: Boolean = true): String {
+    private fun encodeFunction(type: ExchangeFunction, data: List<Any>, addPrefix: Boolean = true): String {
         val buffer = type.function.encodeCall(encodeData(data))
 
-        return if (prefixed)
+        return if (addPrefix)
             Numeric.toHexString(buffer.array()).prefixed()
         else
             Numeric.toHexString(buffer.array())
@@ -176,7 +176,7 @@ internal class RawFunctionsEncoder(
     }
 
     fun encodedOrdersInfoData(orders: List<SignedOrder>): String =
-        encodeFunction(ORDERS_INFO, listOf(orders), prefixed = false)
+        encodeFunction(ORDERS_INFO, listOf(orders), addPrefix = false)
 
     fun decodeOrdersInfo(data: String): List<OrderInfo> {
         val value = data.substring(2)
