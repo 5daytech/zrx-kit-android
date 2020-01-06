@@ -20,9 +20,9 @@ import org.web3j.tx.gas.ContractGasProvider
 
 class ZrxKit private constructor(
     val relayerManager: IRelayerManager,
+    val networkType: NetworkType,
     private val credentials: Credentials,
     private val providerUrl: String,
-    private val networkType: NetworkType,
     private val gasInfoProvider: ContractGasProvider
 ) {
 
@@ -71,7 +71,7 @@ class ZrxKit private constructor(
                 is RpcProviderMode.Node -> rpcProviderMode.nodeUrl
             }
 
-            return ZrxKit(relayerManager, credentials, providerUrl, networkType, gasPriceProvider)
+            return ZrxKit(relayerManager, networkType, credentials, providerUrl, gasPriceProvider)
         }
 
         fun assetItemForAddress(address: String, type: EAssetProxyId = EAssetProxyId.ERC20): AssetItem = AssetItem(
