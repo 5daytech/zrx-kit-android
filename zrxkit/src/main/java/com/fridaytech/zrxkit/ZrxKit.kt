@@ -88,7 +88,7 @@ class ZrxKit private constructor(
     ) {
         MainNet(
             1,
-            "0x080bf510fcbf18b91105470639e9561022937712",
+            "0x61935cbdd02287b511119ddb11aeb42f1593b7ef",
             "0x95e6f48254609a6ee006f7d493c8e5fb97094cef",
             "0xefc70a1b18c432bdc64b596838b4d138f6bc6cad",
             "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
