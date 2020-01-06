@@ -54,20 +54,24 @@ class ZrxKit private constructor(
         private val defaultGasProvider: GasInfoProvider = object : ZrxKit.GasInfoProvider() {}
 
         private val minAmount = BigInteger("0")
-
         private val maxAmount = BigInteger("999999999999999999")
 
         fun getInstance(
             relayers: List<Relayer>,
             privateKey: BigInteger,
-            infuraKey: String,
+            rpcProviderMode: RpcProviderMode,
             networkType: NetworkType = NetworkType.Ropsten,
             gasPriceProvider: GasInfoProvider = defaultGasProvider
         ): ZrxKit {
             val relayerManager = RelayerManager(relayers)
             val credentials = Credentials.create(ECKeyPair.create(privateKey))
 
-            return ZrxKit(relayerManager, credentials, networkType.getInfuraUrl(infuraKey), networkType, gasPriceProvider)
+            val providerUrl = when(rpcProviderMode) {
+                is RpcProviderMode.Infura -> networkType.getInfuraUrl(rpcProviderMode.projectSecret)
+                is RpcProviderMode.Node -> rpcProviderMode.nodeUrl
+            }
+
+            return ZrxKit(relayerManager, credentials, providerUrl, networkType, gasPriceProvider)
         }
 
         fun assetItemForAddress(address: String, type: EAssetProxyId = EAssetProxyId.ERC20): AssetItem = AssetItem(
@@ -111,9 +115,14 @@ class ZrxKit private constructor(
             "kovan"
         );
 
-        fun getInfuraUrl(infuraKey: String): String {
-            return "https://$subdomain.infura.io/$infuraKey"
+        fun getInfuraUrl(projectSecret: String): String {
+            return "https://$subdomain.infura.io/$projectSecret"
         }
+    }
+
+    sealed class RpcProviderMode {
+        class Infura(val projectSecret: String) : RpcProviderMode()
+        class Node(val nodeUrl: String) : RpcProviderMode()
     }
 
     abstract class GasInfoProvider : ContractGasProvider {
