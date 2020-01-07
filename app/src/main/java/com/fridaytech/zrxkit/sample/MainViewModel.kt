@@ -408,9 +408,9 @@ class MainViewModel: ViewModel() {
             senderAddress = "0x0000000000000000000000000000000000000000",
             takerAddress = "0x0000000000000000000000000000000000000000",
             makerFee = "0",
-            makerFeeAssetData = makerAsset,
+            makerFeeAssetData = "0x",
             takerFee = "0",
-            takerFeeAssetData = takerAsset,
+            takerFeeAssetData = "0x",
             feeRecipientAddress = feeRecipient,
             salt = Date().time.toString()
         )
