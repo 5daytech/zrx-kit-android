@@ -41,6 +41,7 @@ internal class WethWrapper(
             listOf(),
             listOf()
         )
+
         return executeRemoteCallTransaction(function, amount).flowable()
     }
 
@@ -50,6 +51,7 @@ internal class WethWrapper(
             listOf(Uint256(amount)),
             listOf()
         )
+
         return executeRemoteCallTransaction(function).flowable()
     }
 
@@ -60,5 +62,23 @@ internal class WethWrapper(
         internal const val FUNC_WITHDRAW = "withdraw"
 
         private const val BINARY = ""
+    }
+
+    enum class ExchangeFunction(
+        private val signature: String,
+        private val outputs: String = ""
+    ) {
+        DEPOSIT("deposit(uint256)"),
+
+        WITHDRAW("withdraw(uint256)");
+
+        val function: com.esaulpaugh.headlong.abi.Function
+            get() = if (outputs.isEmpty()) {
+                com.esaulpaugh.headlong.abi.Function(signature)
+            } else {
+                com.esaulpaugh.headlong.abi.Function(signature, outputs)
+            }
+
+        val functionName: String = signature.substringBefore("(")
     }
 }

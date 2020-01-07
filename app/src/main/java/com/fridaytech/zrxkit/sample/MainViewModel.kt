@@ -39,7 +39,7 @@ class MainViewModel: ViewModel() {
     private val networkType: EthereumKit.NetworkType = EthereumKit.NetworkType.Ropsten
     private val zrxKitNetworkType: ZrxKit.NetworkType = ZrxKit.NetworkType.Ropsten
 
-    private val feeRecipient = "0x2e8da0868e46fc943766a98b8d92a0380b29ce2a"
+    private val feeRecipient = "0xA5004C8b2D64AD08A80d33Ad000820d63aa2cCC9".toLowerCase(Locale.US)
 
     private val wethAddress = "0xc778417e063141139fce010982780140aa0cd5ab"
     private val tokenAddress = "0x30845a385581ce1dc51d651ff74689d7f4415146"
@@ -89,7 +89,7 @@ class MainViewModel: ViewModel() {
             listOf(ZrxKit.assetItemForAddress(tokenAddress) to ZrxKit.assetItemForAddress(wethAddress)),
             listOf(feeRecipient),
             zrxKitNetworkType.exchangeAddress,
-            RelayerConfig("https://relayer.ropsten.fridayte.ch", "", "v2")
+            RelayerConfig("https://ropsten.api.udex.app", "sra", "v3")
         )
     )
 
@@ -119,7 +119,9 @@ class MainViewModel: ViewModel() {
         wethAdapter = Erc20Adapter(App.instance, ethereumKit, "Wrapped Eth", "WETH", wethAddress, decimals)
         tokenAdapter = Erc20Adapter(App.instance, ethereumKit, "Tameki Coin V2", "TMKv2", tokenAddress, decimals)
 
-        zrxKit = ZrxKit.getInstance(relayers, privateKey, infuraCredentials.secretKey, zrxKitNetworkType, gasInfoProvider)
+        val providerMode = ZrxKit.RpcProviderMode.Infura(infuraCredentials.secretKey)
+
+        zrxKit = ZrxKit.getInstance(relayers, privateKey, providerMode, zrxKitNetworkType, gasInfoProvider)
 
         wethContract = zrxKit.getWethWrapperInstance()
         zrxExchangeContract = zrxKit.getExchangeInstance()
@@ -389,6 +391,7 @@ class MainViewModel: ViewModel() {
         }
 
         val order = Order(
+            chainId = zrxKitNetworkType.id,
             makerAddress = receiveAddress.toLowerCase(),
             exchangeAddress = zrxKitNetworkType.exchangeAddress,
             makerAssetData = makerAsset,
@@ -405,7 +408,9 @@ class MainViewModel: ViewModel() {
             senderAddress = "0x0000000000000000000000000000000000000000",
             takerAddress = "0x0000000000000000000000000000000000000000",
             makerFee = "0",
+            makerFeeAssetData = "0x",
             takerFee = "0",
+            takerFeeAssetData = "0x",
             feeRecipientAddress = feeRecipient,
             salt = Date().time.toString()
         )
@@ -423,7 +428,7 @@ class MainViewModel: ViewModel() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                 }, {
-                    Log.d(TAG, "Order create error $it")
+                    Log.d(TAG, "Order create error ${it}")
                     alertEvent.postValue("Order create error ${it.message}")
                 }, {
                     alertEvent.postValue("Order created")

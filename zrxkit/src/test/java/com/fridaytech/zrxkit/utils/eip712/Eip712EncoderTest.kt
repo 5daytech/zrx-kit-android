@@ -110,53 +110,59 @@ class Eip712EncoderTest {
 
     @Test
     fun `Order sign`() {
-        val cred = Credentials.create("26A5D2061D8D958ADF0B3A0BBD1A58338BC11865BE26B27B56256FE13732E090")
+        val cred = Credentials.create("9480f09553c0198665cb2a9ae6e9496fdb53cd828e41ec5a2928f5413519ab06")
 
-        assertEquals("0xe2507b493bef003030f0a053d55af80237a44c64", cred.address)
+        assertEquals("0xf8359a88b804d28fbec927fb1fa839d827a82af6", cred.address)
 
         val order = Order(
+            chainId = 3,
+            exchangeAddress = "0xfb2dd2a1366de37f7241c83d47da58fd503e2c64",
+            makerAssetData = "0xf47261b0000000000000000000000000c778417e063141139fce010982780140aa0cd5ab",
+            takerAssetData = "0xf47261b000000000000000000000000030845a385581ce1dc51d651ff74689d7f4415146",
+            makerAssetAmount = "50000000000000000",
+            takerAssetAmount = "50000000000000000000",
             makerAddress = cred.address.toLowerCase(),
-            exchangeAddress = "0x35dd2932454449b14cee11a94d3674a936d5d7b2",
-            makerAssetData = "0xf47261b00000000000000000000000002002d3812f58e35f0ea1ffbf80a75a38c32175fa",
-            takerAssetData = "0xf47261b0000000000000000000000000d0a1e359811322d97991e03f863a0c30c2cf029c",
-            makerAssetAmount = "10000000000000000000",
-            takerAssetAmount = "10000000000000000",
-            expirationTimeSeconds = "1561628788",
-            senderAddress = "0x0000000000000000000000000000000000000000",
             takerAddress = "0x0000000000000000000000000000000000000000",
+            expirationTimeSeconds = "1578639727",
+            senderAddress = "0x0000000000000000000000000000000000000000",
+            feeRecipientAddress = "0xa5004c8b2d64ad08a80d33ad000820d63aa2ccc9",
             makerFee = "0",
+            makerFeeAssetData = "0x",
             takerFee = "0",
-            feeRecipientAddress = "0xa258b39954cef5cb142fd567a46cddb31a670124",
-            salt = "1561542388954"
+            takerFeeAssetData = "0x",
+            salt = "1578380527482"
         )
 
         val signedOrder = SignUtils().ecSignOrder(order, cred)
 
-        assertEquals("0x1cdc0509ab7dab796f6aab6d1cf2feb2a6c769483a4861dcccc016a5050a13b9354e6c0e54b91dec84893794eea275312cb0042ef1ea9b1f640f79bf4cb20782fb02",
+        assertEquals("0x1cf1bf46f7b255f15a00100317e60da98da5b2f14e554cc2e28d8393bf7bbbb3f65879afa3337c8f16edb88419f43064d6de8862764f8ede7f2a0f9acc35f140c802",
             signedOrder?.signature)
     }
 
     @Test
     fun `Order signature validate`() {
         val order = SignedOrder(
-            exchangeAddress = "0x35dd2932454449b14cee11a94d3674a936d5d7b2",
-            makerAssetData = "0xf47261b0000000000000000000000000d0a1e359811322d97991e03f863a0c30c2cf029c",
-            takerAssetData = "0xf47261b00000000000000000000000002002d3812f58e35f0ea1ffbf80a75a38c32175fa",
-            makerAssetAmount = "374999999999999999",
-            takerAssetAmount = "404007756948933419521",
-            makerAddress = "0x7f06340c5ca1b5b3648cc1c3c290aa5851ddb7f7",
+            chainId = 3,
+            exchangeAddress = "0xfb2dd2a1366de37f7241c83d47da58fd503e2c64",
+            makerAssetData = "0xf47261b0000000000000000000000000c778417e063141139fce010982780140aa0cd5ab",
+            takerAssetData = "0xf47261b000000000000000000000000030845a385581ce1dc51d651ff74689d7f4415146",
+            makerAssetAmount = "50000000000000000",
+            takerAssetAmount = "50000000000000000000",
+            makerAddress = "0xf8359a88b804d28fbec927fb1fa839d827a82af6",
             takerAddress = "0x0000000000000000000000000000000000000000",
-            expirationTimeSeconds = "1561545792",
+            expirationTimeSeconds = "1578639727",
             senderAddress = "0x0000000000000000000000000000000000000000",
-            feeRecipientAddress = "0xa258b39954cef5cb142fd567a46cddb31a670124",
+            feeRecipientAddress = "0xa5004c8b2d64ad08a80d33ad000820d63aa2ccc9",
             makerFee = "0",
+            makerFeeAssetData = "0x",
             takerFee = "0",
-            salt = "1561545552952",
-            signature = "0x1cec7bc3eb323169417bc33eeaea77a3b8bd79a52f284de4531d352c9b9e00e92464c6dffb04b2595a65030cb7f3869da65bfcd4293303c261d4a4c577c0c9b90003"
+            takerFeeAssetData = "0x",
+            salt = "1578380527482",
+            signature = "0x1cf1bf46f7b255f15a00100317e60da98da5b2f14e554cc2e28d8393bf7bbbb3f65879afa3337c8f16edb88419f43064d6de8862764f8ede7f2a0f9acc35f140c802"
         )
 
         val signer = SignUtils()
-        assertEquals(signer.getSignatureType(order.signature), ESignatureType.ETH_SIGN)
+        assertEquals(signer.getSignatureType(order.signature), ESignatureType.EIP712)
         assertTrue(signer.isValidSignature(order))
     }
 }
