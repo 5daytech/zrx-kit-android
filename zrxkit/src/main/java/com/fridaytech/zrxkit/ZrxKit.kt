@@ -67,7 +67,7 @@ class ZrxKit private constructor(
             val credentials = Credentials.create(ECKeyPair.create(privateKey))
 
             val providerUrl = when(rpcProviderMode) {
-                is RpcProviderMode.Infura -> networkType.getInfuraUrl(rpcProviderMode.projectSecret)
+                is RpcProviderMode.Infura -> networkType.getInfuraUrl(rpcProviderMode.projectId)
                 is RpcProviderMode.Node -> rpcProviderMode.nodeUrl
             }
 
@@ -115,13 +115,16 @@ class ZrxKit private constructor(
             "kovan"
         );
 
-        fun getInfuraUrl(projectSecret: String): String {
-            return "https://$subdomain.infura.io/$projectSecret"
+        fun getInfuraUrl(projectId: String): String {
+            return "https://$subdomain.infura.io/v3/$projectId"
         }
     }
 
     sealed class RpcProviderMode {
-        class Infura(val projectSecret: String) : RpcProviderMode()
+        class Infura(
+            val projectId: String,
+            val projectSecret: String
+        ) : RpcProviderMode()
         class Node(val nodeUrl: String) : RpcProviderMode()
     }
 
